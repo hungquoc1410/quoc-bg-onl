@@ -30,12 +30,14 @@ export default function BlankSlatePlayers({ players, playing }) {
       </Row>
       <Divider>Others</Divider>
       <Row gutter={[8, 8]} className='max-w-full'>
-        <Col span={12}>
-          {others &&
-            others.map((player) => {
-              return <Others key={player.id} player={player} playing={playing} />
-            })}
-        </Col>
+        {others &&
+          others.map((player) => {
+            return (
+              <Col key={player.id} span={12}>
+                <Others player={player} playing={playing} />
+              </Col>
+            )
+          })}
       </Row>
     </>
   )
