@@ -2,22 +2,12 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Rate, Row, Typography } from 'antd'
 
-import { createArrayFromObject } from '../../ultilities/createArrayFromObject'
+import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
 
 const { Title } = Typography
 
 export default function Game({ players }) {
   const [playersData, setPlayersData] = useState()
-  const colors = [
-    '#e6261f',
-    '#eb7532',
-    '#f7d038',
-    '#a3e048',
-    '#49da9a',
-    '#34bbe6',
-    '#4355db',
-    '#d23be7',
-  ]
 
   useEffect(() => {
     setPlayersData(createArrayFromObject(players))
@@ -35,11 +25,11 @@ export default function Game({ players }) {
       <Divider />
       <Row gutter={[16, 16]} className='max-w-full'>
         {playersData &&
-          playersData.map((player, index) => {
+          playersData.map((player) => {
             return (
               <Row key={player.id} gutter={[16, 16]} className='max-w-full w-full'>
                 <Col span={8}>
-                  <Title level={4} style={{ margin: 0, textAlign: 'right', color: colors[index] }}>
+                  <Title level={4} style={{ margin: 0, textAlign: 'right', color: player.color }}>
                     {player.name}
                   </Title>
                 </Col>
@@ -49,7 +39,7 @@ export default function Game({ players }) {
                     count={25}
                     value={player.points}
                     character={({ index }) => index + 1}
-                    style={{ color: colors[index] }}
+                    style={{ color: player.color }}
                   />
                 </Col>
               </Row>

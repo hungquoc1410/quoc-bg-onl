@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { Divider, Input, Modal, Typography } from 'antd'
 
+import { updatePlayer } from '../../../ultilities/firebase'
 import { getInfo } from '../../../ultilities/info'
-import { setBlankSlatePlayerAnswer } from '../blank-slate'
 
 const { Title } = Typography
 
@@ -15,7 +15,7 @@ export default function WordModal({ wordModal, setWordModal, word }) {
     setTime(15)
     const info = await getInfo()
     const { roomId, playerId } = info
-    await setBlankSlatePlayerAnswer(roomId, playerId, answer)
+    await updatePlayer(roomId, playerId, { phase: 'answered', answer: answer.toUpperCase() })
     setAnswer('')
   }
 

@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { get, getDatabase, query, ref, set } from 'firebase/database'
+import { get, getDatabase, query, ref, set, update } from 'firebase/database'
+
+import { createArrayFromObject } from './createArrayFromObject'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,16 +30,8 @@ export const setRoomRef = (roomId) => {
   return ref(Database, `rooms/${roomId}`)
 }
 
-export const setRoomDataRef = (roomId, key) => {
-  return ref(Database, `rooms/${roomId}/${key}`)
-}
-
 export const setPlayerRef = (roomId, playerId) => {
   return ref(Database, `rooms/${roomId}/players/${playerId}`)
-}
-
-export const setPlayerDataRef = (roomId, playerId, key) => {
-  return ref(Database, `rooms/${roomId}/players/${playerId}/${key}`)
 }
 
 // Get data
@@ -52,10 +46,15 @@ export const getRoomData = async (roomId) => {
   return snapshot.val()
 }
 
-export const getPlayerData = async (roomId, playerId) => {
+// Create data
+export const createRoom = async (roomId, data) => {
+  const roomRef = setRoomRef(roomId)
+  return await set(roomRef, data)
+}
+
+export const createPlayer = async (roomId, playerId, data) => {
   const playerRef = setPlayerRef(roomId, playerId)
-  const snapshot = await get(query(playerRef))
-  return snapshot.val()
+  return await set(playerRef, data)
 }
 
 // Remove data
@@ -67,4 +66,26 @@ export const removeRoom = (roomId) => {
 export const removePlayer = (roomId, playerId) => {
   const playerRef = setPlayerRef(roomId, playerId)
   set(playerRef, null)
+}
+
+// Check data
+export const checkRoom = (roomData) => {
+  const playersData = createArrayFromObject(roomData.players)
+  const numOfPlayers = playersData.length
+  const result = playersData.map((player) => player.master).includes(true)
+  if (!result) {
+    updatePlayer(roomData.id, playersData[0].id, { master: true })
+  }
+  return updateRoom(roomData.id, { numOfPlayers: numOfPlayers })
+}
+
+// Update data
+export const updatePlayer = (roomId, playerId, data) => {
+  const playerRef = setPlayerRef(roomId, playerId)
+  return update(playerRef, data)
+}
+
+export const updateRoom = (roomId, data) => {
+  const roomRef = setRoomRef(roomId)
+  return update(roomRef, data)
 }

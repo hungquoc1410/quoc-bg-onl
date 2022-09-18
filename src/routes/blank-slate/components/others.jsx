@@ -5,18 +5,19 @@ import { Card, Typography } from 'antd'
 const { Text } = Typography
 
 export default function Others({ player, playing }) {
-  const { name, ready, answer } = player
+  const { name, phase, answer, color } = player
   return (
     <Card
       hoverable
       title={name}
       actions={[
         !playing && (
-          <Text key='ready' type={ready ? 'success' : 'danger'}>
+          <Text key='ready' type={phase === 'ready' ? 'success' : 'danger'}>
             Ready
           </Text>
         ),
       ]}
+      style={{ border: `6px solid ${color}` }}
     >
       {`Answer: ${answer}`}
     </Card>

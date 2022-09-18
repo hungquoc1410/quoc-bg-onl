@@ -11,28 +11,18 @@ import {
   setPlayerRef,
 } from '../../ultilities/firebase'
 import { clearInfo, getInfo, setInfo } from '../../ultilities/info'
-import { checkBlankSlate } from '../blank-slate/blank-slate'
 
 async function checkUp() {
   const info = await getInfo()
-  const { roomId, playerId, gameId } = info
+  const { roomId, playerId } = info
   if (roomId) {
     removePlayer(roomId, playerId)
     const roomData = await getRoomData(roomId)
     if (!roomData.players) {
       removeRoom(roomId)
-    } else {
-      switch (gameId) {
-        case 'blankslate':
-          checkBlankSlate(roomId)
-          break
-        default:
-          return null
-      }
     }
   }
-  await clearInfo()
-  return null
+  return await clearInfo()
 }
 
 export default function HomePage() {

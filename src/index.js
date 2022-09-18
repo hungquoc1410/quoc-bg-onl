@@ -7,10 +7,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import BlankSlateIndex from './routes/blank-slate'
 import HomePageIndex from './routes/home-page'
 import HomePage from './routes/home-page/home-page'
+import ErrorPage from './shared/error-page'
+import RoomPage from './shared/room-page'
+import Winner from './shared/winner'
 import { Database } from './ultilities/firebase'
-import ErrorPage from './error-page'
-import RoomPage from './room-page'
-import Winner from './winner'
 
 import './index.css'
 import 'antd/dist/antd.min.css'
@@ -19,6 +19,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePageIndex /> },
       {

@@ -3,19 +3,17 @@ import { Col, Layout, Row, Space, Typography } from 'antd'
 import { onValue } from 'firebase/database'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { setRoomRef } from '../../ultilities/firebase'
-import { getInfo } from '../../ultilities/info'
+import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
-import WordModal from './game/word-modal'
+import Game from './components/game'
+import BlankSlatePlayers from './components/players'
+import WordModal from './components/word-modal'
 import {
-  BlankSlateWinner,
-  checkBlankSlate,
-  checkPlayerCount,
-  checkPlayerPoints,
-  setBlankSlatePlayerPoint,
-} from './blank-slate'
-import Game from './game'
-import BlankSlatePlayers from './players'
+  BlankPlayerCount,
+  BlankPlayerPoints,
+  BlankSlateAnswer,
+  BlankSlatePlaying,
+} from './ultilities/blank-slate'
 
 const { Content, Header } = Layout
 const { Title } = Typography
@@ -24,30 +22,36 @@ export default function BlankSlateIndex() {
   const [data, setData] = useState()
   const [wordModal, setWordModal] = useState(false)
   const params = useParams()
-  const roomRef = setRoomRef(params.roomId)
   const navigate = useNavigate()
+  const roomRef = setRoomRef(params.roomId)
 
   useEffect(() => {
     return onValue(roomRef, async (snapshot) => {
       if (snapshot.exists()) {
-        checkBlankSlate(params.roomId)
         const roomData = snapshot.val()
-        if (roomData.round != 0 && roomData.phase === 'answer') {
-          setWordModal(true)
-        } else if (roomData.round != 0 && roomData.phase === 'points') {
-          checkPlayerPoints(params.roomId)
-        } else if (roomData.round != 0 && roomData.phase === 'count') {
-          const info = await getInfo()
-          const { playerId } = info
-          await setBlankSlatePlayerPoint(params.roomId, playerId)
-          checkPlayerCount(params.roomId)
-        } else if (roomData.round != 0 && roomData.phase === 'waiting') {
-          const name = await BlankSlateWinner(params.roomId)
-          if (name) {
-            navigate('/winner', { state: { name: name } })
+        setData(roomData)
+        const roomPhase = roomData.phase
+        checkRoom(roomData)
+        switch (roomPhase) {
+          case 'playing':
+            await BlankSlatePlaying(roomData)
+            setWordModal(true)
+            break
+          case 'answer':
+            BlankSlateAnswer(roomData)
+            break
+          case 'points':
+            BlankPlayerPoints(roomData)
+            break
+          case 'count': {
+            const name = await BlankPlayerCount(roomData)
+            if (name) {
+              navigate('/winner', { state: { name: name } })
+            }
+            break
           }
         }
-        return setData(roomData)
+        return
       }
     })
   }, [])
@@ -91,7 +95,7 @@ export default function BlankSlateIndex() {
                 <Col span={8}>
                   <Row gutter={[8, 8]} className='max-w-full p-4'>
                     <Col span={24}>
-                      <BlankSlatePlayers players={data.players} playing={data.playing} />
+                      <BlankSlatePlayers players={data.players} playing={data.phase != 'waiting'} />
                     </Col>
                   </Row>
                 </Col>

@@ -1,12 +1,12 @@
 import localforage from 'localforage'
 
-export async function getInfo() {
+export const getInfo = async () => {
   let info = await localforage.getItem('info')
   if (!info) info = {}
   return info
 }
 
-export async function setInfo(obj) {
+export const setInfo = async (obj) => {
   let info = await getInfo()
   Object.keys(obj).forEach((key) => {
     info[key] = obj[key]
@@ -15,7 +15,7 @@ export async function setInfo(obj) {
   return info
 }
 
-export async function clearInfo() {
+export const clearInfo = async () => {
   let info = await getInfo()
   delete info['roomId']
   delete info['gameId']
@@ -23,6 +23,6 @@ export async function clearInfo() {
   return info
 }
 
-function set(info) {
+const set = (info) => {
   return localforage.setItem('info', info)
 }

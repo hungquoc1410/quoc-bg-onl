@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Row } from 'antd'
 
-import { createArrayFromObject } from '../../ultilities/createArrayFromObject'
-import { getInfo } from '../../ultilities/info'
+import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
+import { getInfo } from '../../../ultilities/info'
 
-import Others from './players/others'
-import You from './players/you'
+import Others from './others'
+import You from './you'
 
 export default function BlankSlatePlayers({ players, playing }) {
   const playersData = createArrayFromObject(players)

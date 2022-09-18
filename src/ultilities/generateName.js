@@ -2,7 +2,7 @@ export function capFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min
 }
 

@@ -2,9 +2,13 @@ import React, { useState } from 'react'
 import { Button, Card, Input, Layout, message, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { getRoomData, getRoomsData } from '../../ultilities/firebase'
+import { getRoomsData } from '../../ultilities/firebase'
 import { getInfo, setInfo } from '../../ultilities/info'
-import { BlankSlatePlayer, BlankSlateRoom } from '../blank-slate/blank-slate'
+import {
+  BlankSlateInfo,
+  BlankSlatePlayer,
+  BlankSlateRoom,
+} from '../blank-slate/ultilities/blank-slate'
 
 const { Header, Content } = Layout
 const { Meta } = Card
@@ -16,22 +20,22 @@ export default function HomePageIndex() {
 
   async function createRoom(game) {
     const id = Math.random().toString(36).substring(2, 9)
+    const info = await getInfo()
     await setInfo({ roomId: id, gameId: game })
     await BlankSlateRoom(id, game)
-    const info = await getInfo()
     await BlankSlatePlayer(id, info.playerId, true)
-    navigate(`${id}/${game}`)
+    return navigate(`${id}/${game}`)
   }
 
   async function joinRoom() {
     const roomsData = await getRoomsData()
     const allRooms = Object.keys(roomsData)
     if (allRooms.includes(inputRoomId)) {
-      const roomData = await getRoomData(inputRoomId)
-      if (roomData.playing) {
-        errorJoinRoom('Room is playing')
-      } else if (Object.keys(roomData.players).length === roomData.maxPlayer) {
-        errorJoinRoom('Room is full!')
+      const roomData = roomsData[inputRoomId]
+      if (roomData.phase != 'waiting') {
+        message.error('Room is playing!')
+      } else if (roomData.numOfPlayers === roomData.maxPlayer) {
+        message.error('Room is full!')
       } else {
         await setInfo({ roomId: inputRoomId, gameId: roomData.game })
         const info = await getInfo()
@@ -39,13 +43,9 @@ export default function HomePageIndex() {
         navigate(`${inputRoomId}/${roomData.game}`)
       }
     } else {
-      errorJoinRoom('Room does not exist!')
+      message.error('Room does not exist!')
     }
     setInputRoomId('')
-  }
-
-  const errorJoinRoom = (text) => {
-    message.error(text)
   }
 
   return (
@@ -83,14 +83,9 @@ export default function HomePageIndex() {
           style={{
             width: 240,
           }}
-          cover={
-            <img
-              alt='blank-slate'
-              src='https://cf.geekdo-images.com/3esMv2fRjFZHNM8IbGG-kw__itemrep/img/LTD6KNm2SQPmoNPtY_tOu2BWdI0=/fit-in/246x300/filters:strip_icc()/pic4163219.jpg'
-            />
-          }
+          cover={<img alt='blank-slate' src={BlankSlateInfo.image} />}
         >
-          <Meta title='Blank Slate' description='The game where _______ minds think alike.' />
+          <Meta title={BlankSlateInfo.title} description={BlankSlateInfo.description} />
         </Card>
       </Content>
     </Layout>
