@@ -103,8 +103,23 @@ export default function You({ data, playing }) {
           </Button>
         ),
       ]}
-      extra={
-        <Select key='color' defaultValue={color} onChange={changeColor} style={{ width: 140 }}>
+      style={{ border: `6px solid ${color}` }}
+    >
+      <Card.Grid
+        hoverable={false}
+        style={{
+          width: '50%',
+        }}
+      >
+        {`Answer: ${answer}`}
+      </Card.Grid>
+      <Card.Grid
+        hoverable={false}
+        style={{
+          width: '50%',
+        }}
+      >
+        <Select key='color' defaultValue={color} onChange={changeColor} style={{ width: '100%' }}>
           {colorsData.map((color) => (
             <Option
               key={color.name}
@@ -115,10 +130,7 @@ export default function You({ data, playing }) {
             </Option>
           ))}
         </Select>
-      }
-      style={{ border: `6px solid ${color}` }}
-    >
-      {`Answer: ${answer}`}
+      </Card.Grid>
     </Card>
   )
 }

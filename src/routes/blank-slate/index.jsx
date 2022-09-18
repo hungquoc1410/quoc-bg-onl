@@ -62,45 +62,26 @@ export default function BlankSlateIndex() {
         <>
           <Layout className='w-screen h-screen'>
             <Header>
-              <Row gutter={[8, 8]} className='h-full'>
-                <Col span={8}>
-                  <Space className='flex justify-center items-center'>
-                    <Title level={3} style={{ color: 'white', margin: 0, textAlign: 'left' }}>
-                      Room ID:
-                    </Title>
-                    <Title level={3} style={{ color: 'white', margin: 0 }} copyable>
-                      {params.roomId}
-                    </Title>
-                  </Space>
-                </Col>
-                <Col span={8}>
-                  <Space className='flex justify-center items-center w-full'>
-                    <Title level={2} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
-                      Blank Slate
-                    </Title>
-                  </Space>
-                </Col>
-                <Col span={8}>
-                  <Space className='flex justify-end items-center w-full'>
-                    <Title
-                      level={3}
-                      style={{ color: 'white', margin: 0, textAlign: 'right' }}
-                    >{`Round ${data.round}`}</Title>
-                  </Space>
-                </Col>
-              </Row>
+              <Space className='flex justify-center items-center w-full'>
+                <Title level={3} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
+                  Room ID:
+                </Title>
+                <Title level={3} style={{ color: 'white', margin: 0 }} copyable>
+                  {params.roomId}
+                </Title>
+              </Space>
             </Header>
             <Content>
-              <Row gutter={[8, 8]} className='max-w-full'>
-                <Col span={8}>
-                  <Row gutter={[8, 8]} className='max-w-full p-4'>
+              <Row xs={[0, 8]} lg={8} className='w-full '>
+                <Col xs={{ span: 24, order: 2 }} lg={{ span: 8, order: 1 }}>
+                  <Row className='w-full p-4'>
                     <Col span={24}>
                       <BlankSlatePlayers players={data.players} playing={data.phase != 'waiting'} />
                     </Col>
                   </Row>
                 </Col>
-                <Col span={16} className='p-4'>
-                  <Game players={data.players} />
+                <Col xs={{ span: 24, order: 1 }} lg={{ span: 16, order: 2 }} className='p-4'>
+                  <Game players={data.players} round={data.round} />
                 </Col>
               </Row>
             </Content>

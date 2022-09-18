@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Input, Layout, message, Typography } from 'antd'
+import { Button, Card, Col, Divider, Input, Layout, message, Row, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import { getRoomsData } from '../../ultilities/firebase'
@@ -50,43 +50,49 @@ export default function HomePageIndex() {
 
   return (
     <Layout className='w-screen h-screen'>
-      <Header className='flex items-center justify-between'>
-        <Title level={2} style={{ color: 'white', margin: 0 }}>
+      <Header className='flex items-center justify-center'>
+        <Title level={4} style={{ color: 'white', margin: 0 }}>
           Nathan Board Game Online
         </Title>
-        <Input.Group compact style={{ width: '20%' }}>
-          <Input
-            style={{ width: '60%' }}
-            placeholder='Room ID'
-            value={inputRoomId}
-            onChange={(e) => {
-              setInputRoomId(e.target.value)
-            }}
-          />
-          <Button
-            style={{ width: '40%' }}
-            type='primary'
-            onClick={() => {
-              joinRoom()
-            }}
-          >
-            Join Room
-          </Button>
-        </Input.Group>
       </Header>
       <Content className='p-8'>
-        <Card
-          onClick={() => {
-            createRoom('blankslate')
-          }}
-          hoverable
-          style={{
-            width: 240,
-          }}
-          cover={<img alt='blank-slate' src={BlankSlateInfo.image} />}
-        >
-          <Meta title={BlankSlateInfo.title} description={BlankSlateInfo.description} />
-        </Card>
+        <Row>
+          <Col xs={24} lg={4}>
+            <Input.Group compact>
+              <Input
+                style={{ width: '60%' }}
+                placeholder='Room ID'
+                value={inputRoomId}
+                onChange={(e) => {
+                  setInputRoomId(e.target.value)
+                }}
+              />
+              <Button
+                style={{ width: '40%' }}
+                type='primary'
+                onClick={() => {
+                  joinRoom()
+                }}
+              >
+                Join Room
+              </Button>
+            </Input.Group>
+          </Col>
+        </Row>
+        <Divider />
+        <Row xs={[0, 8]} lg={4}>
+          <Col xs={24} lg={4}>
+            <Card
+              onClick={() => {
+                createRoom('blankslate')
+              }}
+              hoverable
+              cover={<img alt='blank-slate' src={BlankSlateInfo.image} />}
+            >
+              <Meta title={BlankSlateInfo.title} description={BlankSlateInfo.description} />
+            </Card>
+          </Col>
+        </Row>
       </Content>
     </Layout>
   )

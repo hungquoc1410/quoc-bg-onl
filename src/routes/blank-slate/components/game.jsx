@@ -6,7 +6,7 @@ import { createArrayFromObject } from '../../../ultilities/createArrayFromObject
 
 const { Title } = Typography
 
-export default function Game({ players }) {
+export default function Game({ players, round }) {
   const [playersData, setPlayersData] = useState()
 
   useEffect(() => {
@@ -15,25 +15,25 @@ export default function Game({ players }) {
 
   return (
     <>
-      <Row gutter={[16, 16]} className='max-w-full'>
+      <Row className='w-full'>
         <Col span={24}>
           <Title level={2} style={{ textAlign: 'center' }}>
-            Points
+            {`Round: ${round}`}
           </Title>
         </Col>
       </Row>
       <Divider />
-      <Row gutter={[16, 16]} className='max-w-full'>
+      <Row className='w-full'>
         {playersData &&
           playersData.map((player) => {
             return (
-              <Row key={player.id} gutter={[16, 16]} className='max-w-full w-full'>
-                <Col span={8}>
-                  <Title level={4} style={{ margin: 0, textAlign: 'right', color: player.color }}>
+              <Row key={player.id} xs={[0, 16]} lg={16} className='w-full'>
+                <Col xs={24} lg={8}>
+                  <Title level={4} style={{ margin: 0, textAlign: 'center', color: player.color }}>
                     {player.name}
                   </Title>
                 </Col>
-                <Col span={16}>
+                <Col xs={24} lg={16}>
                   <Rate
                     disabled
                     count={25}

@@ -25,15 +25,15 @@ export default function BlankSlatePlayers({ players, playing }) {
 
   return (
     <>
-      <Row gutter={[8, 8]} className='max-w-full'>
+      <Row className='w-full'>
         <Col span={24}>{you && <You data={you} playing={playing} />}</Col>
       </Row>
       <Divider>Others</Divider>
-      <Row gutter={[8, 8]} className='max-w-full'>
+      <Row xs={[0, 8]} lg={8} className='w-full'>
         {others &&
           others.map((player) => {
             return (
-              <Col key={player.id} span={12}>
+              <Col key={player.id} xs={24} lg={12}>
                 <Others player={player} playing={playing} />
               </Col>
             )
