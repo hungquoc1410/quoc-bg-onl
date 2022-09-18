@@ -9,14 +9,14 @@ const { Title } = Typography
 export default function Game({ players }) {
   const [playersData, setPlayersData] = useState()
   const colors = [
-    'rgb(239 68 68)',
-    'rgb(245 158 11)',
-    'rgb(132 204 22)',
-    'rgb(20 184 166)',
-    'rgb(59 130 246)',
-    'rgb(168 85 247)',
-    'rgb(217 70 239)',
-    'rgb(236 72 153)',
+    '#e6261f',
+    '#eb7532',
+    '#f7d038',
+    '#a3e048',
+    '#49da9a',
+    '#34bbe6',
+    '#4355db',
+    '#d23be7',
   ]
 
   useEffect(() => {
