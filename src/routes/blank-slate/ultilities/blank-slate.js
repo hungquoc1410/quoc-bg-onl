@@ -75,7 +75,7 @@ export const BlankPlayerPoints = async (roomData) => {
   const playerData = playersData.filter((player) => player.id === playerId)[0]
   const playerAnswer = playerData.answer
   let updatePoints = playerData.points
-  if (playerAnswer) {
+  if (playerAnswer && playerData.phase != 'counted') {
     const result = allAnswers.filter((answer) => answer === playerAnswer).length
     if (result === 2) {
       updatePoints = playerData.points + 3
