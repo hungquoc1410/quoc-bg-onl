@@ -37,9 +37,9 @@ export default function You({ data, playing }) {
 
   async function startGame() {
     const roomData = await getRoomData(params.roomId)
-    // if (roomData.numOfPlayers < roomData.minPlayer) {
-    //   return message.error({ content: 'Not enough players to start!', duration: 1 })
-    // }
+    if (roomData.numOfPlayers < roomData.minPlayer) {
+      return message.error({ content: 'Need 3 players to start the game!', duration: 1 })
+    }
     const playersData = createArrayFromObject(roomData.players)
     const allReady = !playersData.map((data) => data.phase === 'ready').includes(false)
     if (allReady) {
