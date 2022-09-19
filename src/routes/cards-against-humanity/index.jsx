@@ -49,15 +49,15 @@ export default function CAHIndex() {
             </Space>
           </Header>
           <Content>
-            <Row gutter={{ xs: [0, 8], lg: 8 }} className='w-full '>
-              <Col xs={{ span: 24, order: 2 }} lg={{ span: 6, order: 1 }}>
+            <Row gutter={[0, 8]} className='w-full'>
+              <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                 <Row className='w-full p-4'>
                   <Col span={24}>
                     <CAHPlayers players={data.players} playing={data.phase != 'waiting'} />
                   </Col>
                 </Row>
               </Col>
-              <Col xs={{ span: 24, order: 1 }} lg={{ span: 18, order: 2 }} className='p-4'>
+              <Col xs={{ span: 24, order: 1 }} lg={{ span: 24, order: 2 }} className='p-4'>
                 <CAHGame players={data.players} round={data.round} />
               </Col>
             </Row>

@@ -38,7 +38,7 @@ export default function CAHYou({ data }) {
     <>
       <Row>
         <Col span={6}>
-          <div className='flex justify-center items-center cursor-pointer'>
+          <div className='flex justify-center items-center w-full h-full cursor-pointer'>
             <Popover
               overlayStyle={{ width: '40vh' }}
               placement='bottomRight'
@@ -76,7 +76,7 @@ export default function CAHYou({ data }) {
           </div>
         </Col>
         <Col span={18}>
-          <div className='flex justify-center items-center'>
+          <div className='flex justify-center items-center w-full h-full'>
             <Space>{functions()}</Space>
           </div>
         </Col>
