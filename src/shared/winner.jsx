@@ -1,30 +1,26 @@
 import React from 'react'
-import { Button, Col, Result, Row, Table } from 'antd'
+import { Button, Result } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+import BlankSlateWinner from '../routes/blank-slate/components/winner-data'
 
 export default function Winner() {
   const { state } = useLocation()
+  const { name, gameId, data } = state
   const navigate = useNavigate()
   let title
-  if (state.name.length > 1) {
-    title = 'The winner are' + ' ' + state.name.join(', ')
+  if (name.length > 1) {
+    title = 'The winner are' + ' ' + name.join(', ')
   } else {
-    title = 'The winner is' + ' ' + state.name[0]
+    title = 'The winner is' + ' ' + name[0]
   }
 
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Points',
-      dataIndex: 'points',
-      defaultSortOrder: 'descend',
-      sorter: (a, b) => a.points - b.points,
-    },
-  ]
-
+  const winnerPage = () => {
+    switch (gameId) {
+      case 'blankslate':
+        return <BlankSlateWinner data={data} />
+    }
+  }
   return (
     <>
       <Result
@@ -42,11 +38,7 @@ export default function Winner() {
           </Button>,
         ]}
       />
-      <Row className='w-full p-8'>
-        <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
-          <Table columns={columns} dataSource={state.data} pagination={false} />;
-        </Col>
-      </Row>
+      {winnerPage()}
     </>
   )
 }

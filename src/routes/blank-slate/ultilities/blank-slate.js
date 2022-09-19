@@ -96,7 +96,7 @@ export const BlankPlayerCount = async (roomData) => {
   const winnerNames = playersData
     .filter((player) => player.points === maxPoint)
     .map((player) => player.name)
-  const result = [allNamePoints, winnerNames]
+  const result = { data: allNamePoints, name: winnerNames, gameId: 'blankslate' }
   if (maxPoint >= 25) {
     await BlankSlateReset(roomData)
     return result

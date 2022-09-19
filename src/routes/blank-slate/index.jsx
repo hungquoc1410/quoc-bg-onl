@@ -46,7 +46,7 @@ export default function BlankSlateIndex() {
           case 'count': {
             const result = await BlankPlayerCount(roomData)
             if (result) {
-              navigate('/winner', { state: { data: result[0], name: result[1] } })
+              navigate('/winner', { state: result })
             }
             break
           }
