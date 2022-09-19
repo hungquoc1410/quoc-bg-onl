@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
-import Game from './components/game'
+import BlankSlateGame from './components/game'
 import BlankSlatePlayers from './components/players'
 import WordModal from './components/word-modal'
 import {
@@ -63,16 +63,16 @@ export default function BlankSlateIndex() {
           <Layout className='w-screen h-screen'>
             <Header>
               <Space className='flex justify-center items-center w-full'>
-                <Title level={3} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
+                <Title level={4} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
                   Room ID:
                 </Title>
-                <Title level={3} style={{ color: 'white', margin: 0 }} copyable>
+                <Title level={4} style={{ color: 'white', margin: 0 }} copyable>
                   {params.roomId}
                 </Title>
               </Space>
             </Header>
             <Content>
-              <Row xs={[0, 8]} lg={8} className='w-full '>
+              <Row gutter={{ xs: [0, 8], lg: 8 }} className='w-full '>
                 <Col xs={{ span: 24, order: 2 }} lg={{ span: 8, order: 1 }}>
                   <Row className='w-full p-4'>
                     <Col span={24}>
@@ -81,7 +81,7 @@ export default function BlankSlateIndex() {
                   </Row>
                 </Col>
                 <Col xs={{ span: 24, order: 1 }} lg={{ span: 16, order: 2 }} className='p-4'>
-                  <Game players={data.players} round={data.round} />
+                  <BlankSlateGame players={data.players} round={data.round} />
                 </Col>
               </Row>
             </Content>

@@ -5,10 +5,10 @@ import { Col, Divider, Row } from 'antd'
 import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
 import { getInfo } from '../../../ultilities/info'
 
-import BlankSlateOthers from './others'
-import BlankSlateYou from './you'
+import CAHOthers from './others'
+import CAHYou from './you'
 
-export default function BlankSlatePlayers({ players, playing }) {
+export default function CAHPlayers({ players, playing }) {
   const playersData = createArrayFromObject(players)
   const [you, setYou] = useState()
   const [others, setOthers] = useState()
@@ -26,7 +26,7 @@ export default function BlankSlatePlayers({ players, playing }) {
   return (
     <>
       <Row className='w-full'>
-        <Col span={24}>{you && <BlankSlateYou data={you} playing={playing} />}</Col>
+        <Col span={24}>{you && <CAHYou data={you} playing={playing} />}</Col>
       </Row>
       <Divider>Others</Divider>
       <Row gutter={{ xs: [0, 8], lg: 8 }} className='w-full'>
@@ -34,7 +34,7 @@ export default function BlankSlatePlayers({ players, playing }) {
           others.map((player) => {
             return (
               <Col key={player.id} xs={24} lg={12}>
-                <BlankSlateOthers player={player} playing={playing} />
+                <CAHOthers player={player} playing={playing} />
               </Col>
             )
           })}

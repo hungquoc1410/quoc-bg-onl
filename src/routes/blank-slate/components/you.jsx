@@ -10,7 +10,7 @@ import { getRoomData, updatePlayer, updateRoom } from '../../../ultilities/fireb
 const { Text, Paragraph } = Typography
 const { Option } = Select
 
-export default function You({ data, playing }) {
+export default function BlankSlateYou({ data, playing }) {
   const { name, phase, id, master, answer, color } = data
   const params = useParams()
   const [yourName, setYourName] = useState(name)

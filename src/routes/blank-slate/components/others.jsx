@@ -4,7 +4,7 @@ import { Card, Typography } from 'antd'
 
 const { Text } = Typography
 
-export default function Others({ player, playing }) {
+export default function BlankSlateOthers({ player, playing }) {
   const { name, phase, answer, color } = player
   return (
     <Card

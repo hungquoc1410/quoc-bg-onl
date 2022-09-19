@@ -6,7 +6,7 @@ import { createArrayFromObject } from '../../../ultilities/createArrayFromObject
 
 const { Title } = Typography
 
-export default function Game({ players, round }) {
+export default function BlankSlateGame({ players, round }) {
   const [playersData, setPlayersData] = useState()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Game({ players, round }) {
         {playersData &&
           playersData.map((player) => {
             return (
-              <Row key={player.id} xs={[0, 16]} lg={16} className='w-full'>
+              <Row key={player.id} gutter={{ xs: [0, 16], lg: 16 }} className='w-full'>
                 <Col xs={24} lg={8}>
                   <Title level={4} style={{ margin: 0, textAlign: 'center', color: player.color }}>
                     {player.name}
