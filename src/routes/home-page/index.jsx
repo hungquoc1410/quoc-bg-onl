@@ -6,6 +6,7 @@ import { getRoomsData } from '../../ultilities/firebase'
 import { gameData } from '../../ultilities/games'
 import { getInfo, setInfo } from '../../ultilities/info'
 import { BlankSlatePlayer, BlankSlateRoom } from '../blank-slate/ultilities/blank-slate'
+import { CAHPlayer, CAHRoom } from '../cards-against-humanity/ultilities/cards-against-humanity'
 
 const { Header, Content } = Layout
 const { Meta } = Card
@@ -19,8 +20,16 @@ export default function HomePageIndex() {
     const id = Math.random().toString(36).substring(2, 9)
     const info = await getInfo()
     await setInfo({ roomId: id, gameId: game })
-    await BlankSlateRoom(id, game)
-    await BlankSlatePlayer(id, info.playerId, true)
+    switch (game) {
+      case 'blankslate':
+        await BlankSlateRoom(id, game)
+        await BlankSlatePlayer(id, info.playerId, true)
+        break
+      case 'cah':
+        await CAHRoom(id, game)
+        await CAHPlayer(id, info.playerId, true, true)
+        break
+    }
     return navigate(`${id}/${game}`)
   }
 
