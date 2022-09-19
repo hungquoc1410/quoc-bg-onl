@@ -45,7 +45,14 @@ export default function HomePageIndex() {
       } else {
         await setInfo({ roomId: inputRoomId, gameId: roomData.game })
         const info = await getInfo()
-        await BlankSlatePlayer(inputRoomId, info.playerId)
+        switch (roomData.game) {
+          case 'blankslate':
+            await BlankSlatePlayer(inputRoomId, info.playerId)
+            break
+          case 'cah':
+            await CAHPlayer(inputRoomId, info.playerId)
+            break
+        }
         navigate(`${inputRoomId}/${roomData.game}`)
       }
     } else {
