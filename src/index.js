@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import BlankSlateIndex from './routes/blank-slate'
+import CAHIndex from './routes/cards-against-humanity'
 import HomePageIndex from './routes/home-page'
 import HomePage from './routes/home-page/home-page'
 import ErrorPage from './shared/error-page'
@@ -31,7 +32,10 @@ const router = createBrowserRouter([
         path: ':roomId',
         element: <RoomPage />,
         errorElement: <ErrorPage />,
-        children: [{ path: 'blankslate', element: <BlankSlateIndex /> }],
+        children: [
+          { path: 'blankslate', element: <BlankSlateIndex /> },
+          { path: 'cah', element: <CAHIndex /> },
+        ],
       },
     ],
   },

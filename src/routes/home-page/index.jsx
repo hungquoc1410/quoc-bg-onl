@@ -3,12 +3,9 @@ import { Button, Card, Col, Divider, Input, Layout, message, Row, Typography } f
 import { useNavigate } from 'react-router-dom'
 
 import { getRoomsData } from '../../ultilities/firebase'
+import { gameData } from '../../ultilities/games'
 import { getInfo, setInfo } from '../../ultilities/info'
-import {
-  BlankSlateInfo,
-  BlankSlatePlayer,
-  BlankSlateRoom,
-} from '../blank-slate/ultilities/blank-slate'
+import { BlankSlatePlayer, BlankSlateRoom } from '../blank-slate/ultilities/blank-slate'
 
 const { Header, Content } = Layout
 const { Meta } = Card
@@ -80,18 +77,26 @@ export default function HomePageIndex() {
           </Col>
         </Row>
         <Divider />
-        <Row xs={[0, 8]} lg={4}>
-          <Col xs={24} lg={4}>
-            <Card
-              onClick={() => {
-                createRoom('blankslate')
-              }}
-              hoverable
-              cover={<img alt='blank-slate' src={BlankSlateInfo.image} />}
-            >
-              <Meta title={BlankSlateInfo.title} description={BlankSlateInfo.description} />
-            </Card>
-          </Col>
+        <Row gutter={{ xs: [0, 8], lg: 16 }}>
+          {gameData.map((game) => {
+            return (
+              <Col key={game.title} xs={24} lg={4}>
+                <Card
+                  onClick={() => {
+                    createRoom(game.link)
+                  }}
+                  hoverable
+                  cover={
+                    <div className='aspect-square overflow-hidden'>
+                      <img alt={game.title} src={game.image} className='w-full' />
+                    </div>
+                  }
+                >
+                  <Meta title={game.title} description={game.description} />
+                </Card>
+              </Col>
+            )
+          })}
         </Row>
       </Content>
     </Layout>

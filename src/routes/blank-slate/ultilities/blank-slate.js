@@ -6,13 +6,6 @@ import { getInfo } from '../../../ultilities/info'
 
 import { wordsData } from './words'
 
-export const BlankSlateInfo = {
-  image:
-    'https://cf.geekdo-images.com/3esMv2fRjFZHNM8IbGG-kw__itemrep/img/LTD6KNm2SQPmoNPtY_tOu2BWdI0=/fit-in/246x300/filters:strip_icc()/pic4163219.jpg',
-  title: 'Blank Slate',
-  description: 'The game where _______ minds think alike.',
-}
-
 export const BlankSlateRoom = async (roomId, gameId) => {
   const roomData = {
     id: roomId,
