@@ -9,8 +9,8 @@ import ReadyButton from '../../../shared/ready-button'
 import StartButton from '../../../shared/start-button'
 import { invertColor } from '../../../ultilities/invertColor'
 
-export default function CAHYou({ data }) {
-  const { name, color, id, master, phase } = data
+export default function CAHYou({ roomData, playerData, playing }) {
+  const { name, color, id, master, phase } = playerData
   const params = useParams()
   const [userSetting, setUserSetting] = useState(false)
 
@@ -21,15 +21,27 @@ export default function CAHYou({ data }) {
   const functions = () => {
     switch (master) {
       case true: {
-        return (
-          <>
-            <StartButton />
-            <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
-          </>
-        )
+        switch (playing) {
+          case true:
+            break
+          default:
+            return (
+              <>
+                <StartButton roomData={roomData} />
+                <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+              </>
+            )
+        }
+        break
       }
       default: {
-        return <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+        switch (playing) {
+          case true:
+            break
+          default:
+            return <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+        }
+        break
       }
     }
   }

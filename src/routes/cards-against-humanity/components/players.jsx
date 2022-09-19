@@ -8,8 +8,9 @@ import { getInfo } from '../../../ultilities/info'
 import CAHOthers from './others'
 import CAHYou from './you'
 
-export default function CAHPlayers({ players, playing }) {
-  const playersData = createArrayFromObject(players)
+export default function CAHPlayers({ roomData }) {
+  const playing = roomData.phase != 'waiting'
+  const playersData = createArrayFromObject(roomData.players)
   const [you, setYou] = useState()
   const [others, setOthers] = useState()
 
@@ -21,7 +22,7 @@ export default function CAHPlayers({ players, playing }) {
       setOthers(playersData.filter((player) => player.id != playerId))
     }
     setUp()
-  }, [players])
+  }, [roomData])
 
   return (
     <>
@@ -29,7 +30,9 @@ export default function CAHPlayers({ players, playing }) {
         <Col span={6}>
           <Divider style={{ margin: 0 }}>You</Divider>
           <Row className='w-full mt-4'>
-            <Col span={24}>{you && <CAHYou data={you} playing={playing} />}</Col>
+            <Col span={24}>
+              {you && <CAHYou roomData={roomData} playerData={you} playing={playing} />}
+            </Col>
           </Row>
         </Col>
         <Col span={18}>

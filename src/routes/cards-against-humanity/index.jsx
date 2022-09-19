@@ -53,7 +53,7 @@ export default function CAHIndex() {
               <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                 <Row className='w-full p-4'>
                   <Col span={24}>
-                    <CAHPlayers players={data.players} playing={data.phase != 'waiting'} />
+                    <CAHPlayers roomData={data} players={data.players} playing={data.phase != 'waiting'} />
                   </Col>
                 </Row>
               </Col>
