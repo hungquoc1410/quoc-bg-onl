@@ -88,10 +88,33 @@ export const BlankPlayerPoints = async (roomData) => {
 
 export const BlankPlayerCount = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
+  const allNamePoints = playersData.map((player) => {
+    return { key: player.id, name: player.name, points: player.points }
+  })
   const allPoints = playersData.map((player) => player.points)
   const maxPoint = Math.max(...allPoints)
+  const winnerNames = playersData
+    .filter((player) => player.points === maxPoint)
+    .map((player) => player.name)
+  const result = [allNamePoints, winnerNames]
   if (maxPoint >= 25) {
-    return playersData.filter((player) => player.points === maxPoint).map((player) => player.name)
+    await BlankSlateReset(roomData)
+    return result
   }
   return null
+}
+
+export const BlankSlateReset = async (roomData) => {
+  await updateRoom(roomData.id, {
+    words: wordsData,
+    current: '',
+    round: 0,
+    numOfPlayers: 1,
+    phase: 'waiting',
+  })
+  const playersData = createArrayFromObject(roomData.players)
+  const allIds = playersData.map((player) => player.id)
+  return allIds.forEach((id) =>
+    updatePlayer(roomData.id, id, { points: 0, phase: 'waiting', answer: '' }),
+  )
 }
