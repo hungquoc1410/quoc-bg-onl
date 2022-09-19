@@ -16,8 +16,6 @@ export default function CAHIndex() {
   const params = useParams()
   const roomRef = setRoomRef(params.roomId)
 
-  console.log(data)
-
   useEffect(() => {
     return onValue(roomRef, async (snapshot) => {
       if (snapshot.exists()) {
