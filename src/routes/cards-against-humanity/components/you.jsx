@@ -1,32 +1,37 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Avatar, Col, Popover, Row, Select, Tooltip, Typography } from 'antd'
+import { Avatar, Col, Popover, Row, Space, Tooltip } from 'antd'
 import { useParams } from 'react-router-dom'
 
-import { colorsData } from '../../../ultilities/colors'
-import { updatePlayer } from '../../../ultilities/firebase'
+import ChangeColorInput from '../../../shared/change-color-input'
+import ChangeNameInput from '../../../shared/change-name-input'
+import ReadyButton from '../../../shared/ready-button'
+import StartButton from '../../../shared/start-button'
 import { invertColor } from '../../../ultilities/invertColor'
 
-const { Paragraph } = Typography
-const { Option } = Select
-
 export default function CAHYou({ data }) {
-  const { name, color, id } = data
+  const { name, color, id, master, phase } = data
   const params = useParams()
   const [userSetting, setUserSetting] = useState(false)
-  const [yourName, setYourName] = useState(name)
 
-  const changeOpenUserSetting = (newOpen) => {
+  const handleOpenChange = (newOpen) => {
     setUserSetting(newOpen)
   }
 
-  const changeColor = async (value) => {
-    return await updatePlayer(params.roomId, id, { color: value })
-  }
-
-  const changeName = async (string) => {
-    await updatePlayer(params.roomId, id, { name: string })
-    return setYourName(string)
+  const functions = () => {
+    switch (master) {
+      case true: {
+        return (
+          <>
+            <StartButton />
+            <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+          </>
+        )
+      }
+      default: {
+        return <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+      }
+    }
   }
 
   return (
@@ -38,42 +43,22 @@ export default function CAHYou({ data }) {
               overlayStyle={{ width: '40vh' }}
               placement='bottomRight'
               content={
-                <>
+                <div>
                   <Row>
-                    <Paragraph
-                      style={{ width: '100%' }}
-                      editable={{
-                        onChange: changeName,
-                        maxLength: 20,
-                        triggerType: ['text', 'icon'],
-                      }}
-                    >
-                      {yourName}
-                    </Paragraph>
+                    <ChangeNameInput
+                      roomId={params.roomId}
+                      playerId={id}
+                      playerName={name}
+                    ></ChangeNameInput>
                   </Row>
                   <Row>
-                    <Select
-                      key='color'
-                      defaultValue={color}
-                      onChange={changeColor}
-                      style={{ width: '100%' }}
-                    >
-                      {colorsData.map((color) => (
-                        <Option
-                          key={color.name}
-                          value={color.color}
-                          style={{ color: color.color, backgroundColor: color.color }}
-                        >
-                          {color.name}
-                        </Option>
-                      ))}
-                    </Select>
+                    <ChangeColorInput roomId={params.roomId} playerId={id} playerColor={color} />
                   </Row>
-                </>
+                </div>
               }
               trigger='click'
               open={userSetting}
-              onOpenChange={changeOpenUserSetting}
+              onOpenChange={handleOpenChange}
             >
               <Tooltip title='Click to edit name and color' placement='topRight'>
                 <Avatar
@@ -81,6 +66,7 @@ export default function CAHYou({ data }) {
                   style={{
                     color: invertColor(color),
                     backgroundColor: color,
+                    verticalAlign: 'middle',
                   }}
                 >
                   {name[0]}
@@ -89,7 +75,11 @@ export default function CAHYou({ data }) {
             </Popover>
           </div>
         </Col>
-        <Col span={18}>Functions</Col>
+        <Col span={18}>
+          <div className='flex justify-center items-center'>
+            <Space>{functions()}</Space>
+          </div>
+        </Col>
       </Row>
     </>
   )
