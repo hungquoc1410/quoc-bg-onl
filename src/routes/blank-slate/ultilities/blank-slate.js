@@ -58,9 +58,9 @@ export const BlankSlateAnswer = async (roomData) => {
 
 export const BlankPlayerPoints = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
-  const allCounted = !playersData.map((player) => player.phase === 'counted').includes(false)
+  const allCounted = !playersData.map((player) => player.phase === 'ready').includes(false)
   if (allCounted) {
-    return await updateRoom(roomData.id, { phase: 'count' })
+    return await updateRoom(roomData.id, { phase: 'waiting' })
   }
   const allAnswers = playersData.map((player) => player.answer)
   const info = await getInfo()
@@ -68,7 +68,7 @@ export const BlankPlayerPoints = async (roomData) => {
   const playerData = playersData.filter((player) => player.id === playerId)[0]
   const playerAnswer = playerData.answer
   let updatePoints = playerData.points
-  if (playerAnswer && playerData.phase != 'counted') {
+  if (playerAnswer && playerData.phase != 'ready') {
     const result = allAnswers.filter((answer) => answer === playerAnswer).length
     if (result === 2) {
       updatePoints = playerData.points + 3
@@ -76,10 +76,10 @@ export const BlankPlayerPoints = async (roomData) => {
       updatePoints = playerData.points + 1
     }
   }
-  return await updatePlayer(roomData.id, playerId, { phase: 'counted', points: updatePoints })
+  return await updatePlayer(roomData.id, playerId, { phase: 'ready', points: updatePoints })
 }
 
-export const BlankPlayerCount = async (roomData) => {
+export const BlankPlayerWaiting = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
   const allNamePoints = playersData.map((player) => {
     return { key: player.id, name: player.name, points: player.points }
@@ -103,11 +103,8 @@ export const BlankSlateReset = async (roomData) => {
     current: '',
     round: 0,
     numOfPlayers: 1,
-    phase: 'waiting',
   })
   const playersData = createArrayFromObject(roomData.players)
   const allIds = playersData.map((player) => player.id)
-  return allIds.forEach((id) =>
-    updatePlayer(roomData.id, id, { points: 0, phase: 'waiting', answer: '' }),
-  )
+  return allIds.forEach((id) => updatePlayer(roomData.id, id, { points: 0, answer: '' }))
 }

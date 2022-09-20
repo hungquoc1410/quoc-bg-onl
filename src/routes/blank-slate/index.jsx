@@ -9,8 +9,8 @@ import BlankSlateGame from './components/game'
 import BlankSlatePlayers from './components/players'
 import WordModal from './components/word-modal'
 import {
-  BlankPlayerCount,
   BlankPlayerPoints,
+  BlankPlayerWaiting,
   BlankSlateAnswer,
   BlankSlatePlaying,
 } from './ultilities/blank-slate'
@@ -33,6 +33,14 @@ export default function BlankSlateIndex() {
         const roomPhase = roomData.phase
         checkRoom(roomData)
         switch (roomPhase) {
+          case 'waiting':
+            {
+              const result = await BlankPlayerWaiting(roomData)
+              if (result) {
+                navigate('/winner', { state: result })
+              }
+            }
+            break
           case 'playing':
             await BlankSlatePlaying(roomData)
             setWordModal(true)
@@ -43,13 +51,6 @@ export default function BlankSlateIndex() {
           case 'points':
             BlankPlayerPoints(roomData)
             break
-          case 'count': {
-            const result = await BlankPlayerCount(roomData)
-            if (result) {
-              navigate('/winner', { state: result })
-            }
-            break
-          }
         }
         return
       }

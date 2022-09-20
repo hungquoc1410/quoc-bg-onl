@@ -22,7 +22,7 @@ export default function BlankSlateYou({ roomData, playerData }) {
   }
 
   const nextRound = async () => {
-    if (roomData.phase === 'count') {
+    if (roomData.phase === 'waiting') {
       await updateRoom(params.roomId, { phase: 'playing' })
     }
     return
@@ -55,12 +55,14 @@ export default function BlankSlateYou({ roomData, playerData }) {
                   </Button>
                 )
             }
-
           default:
-            return <ReadyButton phase={phase} roomId={roomData.id} playerId={id} />
+            switch (round) {
+              case 0:
+                return <ReadyButton phase={phase} roomId={roomData.id} playerId={id} />
+              default:
+                break
+            }
         }
-      default:
-        break
     }
   }
 

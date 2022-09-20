@@ -5,6 +5,7 @@ import PlayerAvatar from '../../../shared/avatar'
 
 export default function BlankSlateOthers({ playerData, playing }) {
   const { name, phase, color, points } = playerData
+  
   return (
     <PlayerAvatar
       name={name}
