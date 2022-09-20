@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { Col, Row } from 'antd'
+import _ from 'underscore'
 
 import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
 import { updateRoom } from '../../../ultilities/firebase'
@@ -44,9 +45,13 @@ export default function CAHGame({ roomData }) {
         </Row>
       </Col>
       <Col xs={24} lg={18}>
-        <Row className='w-full' justify='center'>
+        <Row
+          className='w-full lg:!justify-center lg:!gap-4'
+          justify='space-evenly'
+          gutter={[0, 16]}
+        >
           {currentWhites &&
-            currentWhites.map((white) => {
+            _.shuffle(currentWhites).map((white) => {
               return (
                 <Col
                   key={white}

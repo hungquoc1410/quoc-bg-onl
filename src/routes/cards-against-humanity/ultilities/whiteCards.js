@@ -1228,5 +1228,4 @@ export const whiteCardsData = [
   'white_1226.png',
   'white_1227.png',
   'white_1228.png',
-  'white_1229.png',
 ]

@@ -56,7 +56,11 @@ export default function MyCards({ open, setOpen, black, whites, roomId, playerId
           </Row>
         </Col>
         <Col xs={24} lg={18}>
-          <Row className='w-full lg:!justify-center lg:!gap-4' justify='space-evenly' gutter={[0, 16]}>
+          <Row
+            className='w-full lg:!justify-center lg:!gap-4'
+            justify='space-evenly'
+            gutter={[0, 16]}
+          >
             {whites &&
               whites.map((white) => {
                 return (
