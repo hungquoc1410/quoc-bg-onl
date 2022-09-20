@@ -199,7 +199,7 @@ export default function CAHYou({ roomData, playerData }) {
         <Col span={6}>
           <div className='flex justify-center items-center w-full h-full cursor-pointer'>
             <Popover
-              overlayStyle={{ width: '40vh' }}
+              overlayStyle={{ width: '20vw' }}
               placement='bottomRight'
               content={
                 <div>

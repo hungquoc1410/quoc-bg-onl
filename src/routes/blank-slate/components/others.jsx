@@ -1,25 +1,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Card, Typography } from 'antd'
 
-const { Text } = Typography
+import PlayerAvatar from '../../../shared/avatar'
 
-export default function BlankSlateOthers({ player, playing }) {
-  const { name, phase, answer, color } = player
+export default function BlankSlateOthers({ playerData, playing }) {
+  const { name, phase, color, points } = playerData
   return (
-    <Card
-      hoverable
-      title={name}
-      actions={[
-        !playing && (
-          <Text key='ready' type={phase === 'ready' ? 'success' : 'danger'}>
-            Ready
-          </Text>
-        ),
-      ]}
-      style={{ border: `6px solid ${color}` }}
-    >
-      {`Answer: ${answer}`}
-    </Card>
+    <PlayerAvatar
+      name={name}
+      color={color}
+      points={points}
+      ready={phase === 'ready'}
+      playing={playing}
+    />
   )
 }

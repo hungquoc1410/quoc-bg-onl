@@ -1,17 +1,46 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import { Col, Divider, Rate, Row, Typography } from 'antd'
+import React from 'react'
+import { Col, Divider, Row, Table, Tag, Typography } from 'antd'
 
 import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
 
 const { Title } = Typography
 
 export default function BlankSlateGame({ players, round }) {
-  const [playersData, setPlayersData] = useState()
+  const playersData = createArrayFromObject(players)
 
-  useEffect(() => {
-    setPlayersData(createArrayFromObject(players))
-  }, [players])
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      render: (name) => {
+        return (
+          <Tag color={name.color} key={name.name}>
+            {name.name}
+          </Tag>
+        )
+      },
+    },
+    {
+      title: 'Answer',
+      dataIndex: 'answer',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.answer - b.asnwer,
+    },
+    {
+      title: 'Points',
+      dataIndex: 'points',
+    },
+  ]
+
+  const data = playersData.map((player) => {
+    return {
+      key: player.id,
+      name: { name: player.name, color: player.color },
+      answer: player.answer,
+      points: player.points,
+    }
+  })
 
   return (
     <>
@@ -24,27 +53,11 @@ export default function BlankSlateGame({ players, round }) {
       </Row>
       <Divider />
       <Row className='w-full'>
-        {playersData &&
-          playersData.map((player) => {
-            return (
-              <Row key={player.id} gutter={{ xs: [0, 16], lg: 16 }} className='w-full'>
-                <Col xs={24} lg={8}>
-                  <Title level={4} style={{ margin: 0, textAlign: 'center', color: player.color }}>
-                    {player.name}
-                  </Title>
-                </Col>
-                <Col xs={24} lg={16}>
-                  <Rate
-                    disabled
-                    count={25}
-                    value={player.points}
-                    character={({ index }) => index + 1}
-                    style={{ color: player.color }}
-                  />
-                </Col>
-              </Row>
-            )
-          })}
+        <Row className='w-full p-8'>
+          <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
+            <Table columns={columns} dataSource={data} pagination={false} />;
+          </Col>
+        </Row>
       </Row>
     </>
   )

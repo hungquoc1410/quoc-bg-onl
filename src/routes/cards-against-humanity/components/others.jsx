@@ -3,8 +3,8 @@ import React from 'react'
 
 import PlayerAvatar from '../../../shared/avatar'
 
-export default function CAHOthers({ player, playing }) {
-  const { name, phase, color, points } = player
+export default function CAHOthers({ playerData, playing }) {
+  const { name, phase, color, points } = playerData
 
   return (
     <PlayerAvatar

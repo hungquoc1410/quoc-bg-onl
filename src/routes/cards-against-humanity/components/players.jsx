@@ -30,9 +30,7 @@ export default function CAHPlayers({ roomData }) {
         <Col xs={24} lg={6}>
           <Divider style={{ margin: 0 }}>You</Divider>
           <Row className='w-full mt-4'>
-            <Col span={24}>
-              {you && <CAHYou roomData={roomData} playerData={you} playing={playing} />}
-            </Col>
+            <Col span={24}>{you && <CAHYou roomData={roomData} playerData={you} />}</Col>
           </Row>
         </Col>
         <Col xs={24} lg={18}>
@@ -43,7 +41,7 @@ export default function CAHPlayers({ roomData }) {
                 return (
                   <Col key={player.id} xs={4} lg={3}>
                     <div className='flex justify-center items-center w-full h-full'>
-                      <CAHOthers player={player} playing={playing} />
+                      <CAHOthers playerData={player} playing={playing} />
                     </div>
                   </Col>
                 )

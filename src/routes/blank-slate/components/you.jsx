@@ -1,136 +1,122 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Button, Card, message, Select, Typography } from 'antd'
+import { Avatar, Badge, Button, Col, Popover, Row, Space, Tooltip } from 'antd'
 import { useParams } from 'react-router-dom'
 
-import { colorsData } from '../../../ultilities/colors'
-import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
-import { getRoomData, updatePlayer, updateRoom } from '../../../ultilities/firebase'
+import ChangeColorInput from '../../../shared/change-color-input'
+import ChangeNameInput from '../../../shared/change-name-input'
+import ReadyButton from '../../../shared/ready-button'
+import StartButton from '../../../shared/start-button'
+import { updateRoom } from '../../../ultilities/firebase'
+import { invertColor } from '../../../ultilities/invertColor'
 
-const { Text, Paragraph } = Typography
-const { Option } = Select
-
-export default function BlankSlateYou({ data, playing }) {
-  const { name, phase, id, master, answer, color } = data
+export default function BlankSlateYou({ roomData, playerData }) {
+  const { name, id, color, points, master, phase } = playerData
+  const { round } = roomData
+  const roomPhase = roomData.phase
+  const [userSetting, setUserSetting] = useState(false)
   const params = useParams()
-  const [yourName, setYourName] = useState(name)
 
-  const changeName = async (string) => {
-    await updatePlayer(params.roomId, id, { name: string })
-    return setYourName(string)
+  const handleOpenChange = (newOpen) => {
+    setUserSetting(newOpen)
   }
 
-  const changeColor = async (value) => {
-    return await updatePlayer(params.roomId, id, { color: value })
-  }
-
-  const changeReady = async () => {
-    switch (phase) {
-      case 'ready':
-        updatePlayer(params.roomId, id, { phase: 'waiting' })
-        break
-      case 'waiting':
-        updatePlayer(params.roomId, id, { phase: 'ready' })
-        break
-    }
-  }
-
-  async function startGame() {
-    const roomData = await getRoomData(params.roomId)
-    if (roomData.numOfPlayers < roomData.minPlayer) {
-      return message.error('Need 3 players to start the game!')
-    }
-    const playersData = createArrayFromObject(roomData.players)
-    const allReady = !playersData.map((data) => data.phase === 'ready').includes(false)
-    if (allReady) {
-      return updateRoom(roomData.id, { phase: 'playing' })
-    } else {
-      const notReadyPlayers = playersData
-        .filter((player) => player.phase === 'waiting')
-        .map((player) => player.name)
-      return notReadyPlayers.forEach((name) => message.error(`${name} is not ready!`))
-    }
-  }
-
-  async function nextRound() {
-    const roomData = await getRoomData(params.roomId)
+  const nextRound = async () => {
     if (roomData.phase === 'count') {
       await updateRoom(params.roomId, { phase: 'playing' })
     }
     return
   }
 
+  const functions = () => {
+    switch (roomPhase) {
+      case 'waiting':
+        switch (master) {
+          case true:
+            switch (round) {
+              case 0:
+                return (
+                  <>
+                    <StartButton roomData={roomData} />
+                    <ReadyButton phase={phase} roomId={roomData.id} playerId={id} />
+                  </>
+                )
+              default:
+                return (
+                  <Button
+                    size='large'
+                    shape='round'
+                    type='primary'
+                    onClick={() => {
+                      nextRound()
+                    }}
+                  >
+                    Next Round
+                  </Button>
+                )
+            }
+
+          default:
+            return <ReadyButton phase={phase} roomId={roomData.id} playerId={id} />
+        }
+      default:
+        break
+    }
+  }
+
   return (
-    <Card
-      title={
-        <Paragraph
-          style={{ width: 210 }}
-          editable={{ onChange: changeName, maxLength: 20, triggerType: ['text', 'icon'] }}
-        >
-          {yourName}
-        </Paragraph>
-      }
-      actions={[
-        master &&
-          (playing ? (
-            <Button
-              key='nextRound'
-              size='large'
-              shape='round'
-              type='primary'
-              onClick={() => {
-                nextRound()
-              }}
-            >
-              Next Round
-            </Button>
-          ) : (
-            <Button
-              key='master'
-              size='large'
-              shape='round'
-              type='primary'
-              onClick={() => {
-                startGame()
-              }}
-            >
-              Start Game
-            </Button>
-          )),
-        !playing && (
-          <Button key='ready' size='large' shape='round' onClick={() => changeReady()}>
-            <Text type={phase === 'ready' ? 'success' : 'danger'}>Ready</Text>
-          </Button>
-        ),
-      ]}
-      style={{ border: `6px solid ${color}` }}
-    >
-      <Card.Grid
-        hoverable={false}
-        style={{
-          width: '50%',
-        }}
-      >
-        {`Answer: ${answer}`}
-      </Card.Grid>
-      <Card.Grid
-        hoverable={false}
-        style={{
-          width: '50%',
-        }}
-      >
-        <Select key='color' defaultValue={color} onChange={changeColor} style={{ width: '100%' }}>
-          {colorsData.map((color) => (
-            <Option
-              key={color.name}
-              value={color.color}
-              style={{ color: color.color, backgroundColor: color.color }}
-            >
-              {color.name}
-            </Option>
-          ))}
-        </Select>
-      </Card.Grid>
-    </Card>
+    <Row>
+      <Col span={6}>
+        <div className='flex justify-center items-center w-full h-full cursor-pointer'>
+          <Popover
+            overlayStyle={{ width: '20vw' }}
+            placement='bottomRight'
+            content={
+              <div>
+                <Row>
+                  <ChangeNameInput
+                    roomId={params.roomId}
+                    playerId={id}
+                    playerName={name}
+                  ></ChangeNameInput>
+                </Row>
+                <Row>
+                  <ChangeColorInput roomId={params.roomId} playerId={id} playerColor={color} />
+                </Row>
+              </div>
+            }
+            trigger='click'
+            open={userSetting}
+            onOpenChange={handleOpenChange}
+          >
+            <Tooltip title='Click to edit name and color' placement='topRight'>
+              <Badge
+                count={points}
+                color={invertColor(color, false)}
+                style={{ color: invertColor(invertColor(color, false), true) }}
+              >
+                <Avatar
+                  size={64}
+                  style={{
+                    color: invertColor(color, true),
+                    backgroundColor: color,
+                    verticalAlign: 'middle',
+                  }}
+                >
+                  {name[0]}
+                </Avatar>
+              </Badge>
+            </Tooltip>
+          </Popover>
+        </div>
+      </Col>
+      <Col span={18}>
+        <div className='flex justify-center items-center w-full h-full'>
+          <Space wrap={true} className='flex justify-center items-center w-full h-full'>
+            {functions()}
+          </Space>
+        </div>
+      </Col>
+    </Row>
   )
 }

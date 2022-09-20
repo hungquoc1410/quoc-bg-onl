@@ -62,7 +62,7 @@ export default function HomePageIndex() {
   }
 
   return (
-    <Layout className='w-screen h-screen'>
+    <Layout className='w-screen h-screen overflow-scroll'>
       <Header className='flex items-center justify-center'>
         <Title level={4} style={{ color: 'white', margin: 0 }}>
           Nathan Board Game Online

@@ -41,7 +41,7 @@ export default function CAHIndex() {
   return (
     <>
       {data && (
-        <Layout className='w-screen h-screen'>
+        <Layout className='w-screen h-screen overflow-scroll'>
           <Header>
             <Space className='flex justify-center items-center w-full'>
               <Title level={4} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
@@ -57,11 +57,7 @@ export default function CAHIndex() {
               <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                 <Row className='w-full p-4'>
                   <Col span={24}>
-                    <CAHPlayers
-                      roomData={data}
-                      players={data.players}
-                      playing={data.phase != 'waiting'}
-                    />
+                    <CAHPlayers roomData={data} />
                   </Col>
                 </Row>
               </Col>

@@ -60,7 +60,7 @@ export default function BlankSlateIndex() {
     <>
       {data && (
         <>
-          <Layout className='w-screen h-screen'>
+          <Layout className='w-screen h-screen overflow-scroll'>
             <Header>
               <Space className='flex justify-center items-center w-full'>
                 <Title level={4} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
@@ -72,15 +72,19 @@ export default function BlankSlateIndex() {
               </Space>
             </Header>
             <Content>
-              <Row gutter={{ xs: [0, 8], lg: 8 }} className='w-full '>
-                <Col xs={{ span: 24, order: 2 }} lg={{ span: 8, order: 1 }}>
+              <Row gutter={[0, 8]} className='w-full'>
+                <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                   <Row className='w-full p-4'>
                     <Col span={24}>
-                      <BlankSlatePlayers players={data.players} playing={data.phase != 'waiting'} />
+                      <BlankSlatePlayers
+                        roomData={data}
+                        players={data.players}
+                        playing={data.phase != 'waiting'}
+                      />
                     </Col>
                   </Row>
                 </Col>
-                <Col xs={{ span: 24, order: 1 }} lg={{ span: 16, order: 2 }} className='p-4'>
+                <Col xs={{ span: 24, order: 1 }} lg={{ span: 24, order: 2 }} className='p-4'>
                   <BlankSlateGame players={data.players} round={data.round} />
                 </Col>
               </Row>
