@@ -5,7 +5,6 @@ import { createArrayFromObject } from '../../../ultilities/createArrayFromObject
 import { createPlayer, createRoom, updatePlayer, updateRoom } from '../../../ultilities/firebase'
 import generateName from '../../../ultilities/generateName'
 import { nextElementInArray } from '../../../ultilities/nextElementInArray'
-import { shuffleArray } from '../../../ultilities/shuffleArray'
 
 import { blackCardsData } from './blackCards'
 import { whiteCardsData } from './whiteCards'
@@ -64,14 +63,12 @@ export const CAHDraw = async (roomData) => {
     const playerCards = player.cards
     let newCards
     if (!playerCards) {
-      newCards = shuffleArray(remainingWhites).splice(1, 10)
+      newCards = _.shuffle(remainingWhites).splice(1, 10)
     } else {
       if (playerCards.length === 10) {
         newCards = playerCards
       } else if (playerCards.length > 0) {
-        newCards = playerCards.concat(
-          shuffleArray(remainingWhites).splice(1, 10 - playerCards.length),
-        )
+        newCards = playerCards.concat(_.shuffle(remainingWhites).splice(1, 10 - playerCards.length))
       }
     }
     return await updatePlayer(id, player.id, { cards: newCards, phase: 'drawed' })
@@ -119,10 +116,9 @@ export const CAHReset = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
   const prevMaster = playersData.filter((player) => player.master === true)[0]
   const nextMasterId = nextElementInArray(prevMaster, playersData).id
+  await updatePlayer(roomData.id, nextMasterId, { master: true, currentWhite: '' })
   playersData.forEach(async (player) => {
-    if (player.id === nextMasterId) {
-      return await updatePlayer(roomData.id, player.id, { master: true, currentWhite: '' })
-    } else {
+    if (player.id != nextMasterId) {
       return await updatePlayer(roomData.id, player.id, { master: false, currentWhite: '' })
     }
   })
