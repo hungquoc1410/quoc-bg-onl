@@ -54,6 +54,8 @@ export default function CAHYou({ roomData, playerData }) {
   }
 
   const nextRound = async () => {
+    setDrawed(false)
+    setConfirm(false)
     return await CAHReset(roomData)
   }
 
