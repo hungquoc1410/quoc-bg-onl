@@ -3,6 +3,7 @@ import React from 'react'
 import { Col, Divider, Row, Table, Tag, Typography } from 'antd'
 
 import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
+import { invertColor } from '../../../ultilities/invertColor'
 
 const { Title } = Typography
 
@@ -15,7 +16,7 @@ export default function BlankSlateGame({ players, round }) {
       dataIndex: 'name',
       render: (name) => {
         return (
-          <Tag color={name.color} key={name.name}>
+          <Tag color={name.color} style={{ color: invertColor(name.color, true) }} key={name.name}>
             {name.name}
           </Tag>
         )
