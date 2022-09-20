@@ -4,6 +4,7 @@ import { generateColor } from '../../../ultilities/colors'
 import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
 import { createPlayer, createRoom, updatePlayer, updateRoom } from '../../../ultilities/firebase'
 import generateName from '../../../ultilities/generateName'
+import { nextElementInArray } from '../../../ultilities/nextElementInArray'
 import { shuffleArray } from '../../../ultilities/shuffleArray'
 
 import { blackCardsData } from './blackCards'
@@ -28,7 +29,7 @@ export const CAHRoom = async (roomId, gameId) => {
   return await createRoom(roomId, roomData)
 }
 
-export const CAHPlayer = async (roomId, playerId, master = false, drawer = false) => {
+export const CAHPlayer = async (roomId, playerId, master = false) => {
   const playerData = {
     id: playerId,
     points: 0,
@@ -36,7 +37,6 @@ export const CAHPlayer = async (roomId, playerId, master = false, drawer = false
     name: generateName(),
     color: generateColor(),
     master,
-    drawer,
     cards: [],
     phase: 'waiting',
   }
@@ -80,11 +80,50 @@ export const CAHDraw = async (roomData) => {
 
 export const CAHSubmit = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players).filter(
-    (player) => player.drawer === false,
+    (player) => player.master === false,
   )
   const allSubmitted = !playersData.map((player) => player.phase === 'submitted').includes(false)
   if (allSubmitted) {
     const currentWhites = playersData.map((player) => player.currentWhite)
     return await updateRoom(roomData.id, { currentWhites, phase: 'choose' })
   }
+}
+
+export const CAHPoint = async (roomData) => {
+  const { confirmWhite, players, id } = roomData
+  const playersData = createArrayFromObject(players)
+  const allPoint = !playersData.map((player) => player.phase === 'ready').includes(false)
+  if (allPoint) {
+    return await updateRoom(id, { phase: 'waiting' })
+  }
+  playersData.forEach(async (player) => {
+    if (player.phase != 'ready') {
+      if (player.currentWhite === confirmWhite) {
+        return await updatePlayer(id, player.id, { phase: 'ready', points: player.points + 1 })
+      } else {
+        return await updatePlayer(id, player.id, { phase: 'ready' })
+      }
+    }
+  })
+}
+
+export const CAHReset = async (roomData) => {
+  await updateRoom(roomData.id, {
+    currentBlack: '',
+    confirmBlack: false,
+    currentWhites: '',
+    confirmWhite: '',
+    phase: 'playing',
+    round: roomData.round + 1,
+  })
+  const playersData = createArrayFromObject(roomData.players)
+  const prevMaster = playersData.filter((player) => player.master === true)[0]
+  const nextMasterId = nextElementInArray(prevMaster, playersData).id
+  playersData.forEach(async (player) => {
+    if (player.id === nextMasterId) {
+      return await updatePlayer(roomData.id, player.id, { master: true, currentWhite: '' })
+    } else {
+      return await updatePlayer(roomData.id, player.id, { master: false, currentWhite: '' })
+    }
+  })
 }

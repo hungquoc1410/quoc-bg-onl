@@ -7,7 +7,7 @@ import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
 import CAHGame from './components/game'
 import CAHPlayers from './components/players'
-import { CAHDraw, CAHPlaying, CAHSubmit } from './ultilities/cards-against-humanity'
+import { CAHDraw, CAHPlaying, CAHPoint, CAHSubmit } from './ultilities/cards-against-humanity'
 
 const { Header, Content } = Layout
 const { Title } = Typography
@@ -31,6 +31,8 @@ export default function CAHIndex() {
             return await CAHDraw(roomData)
           case 'submit':
             return await CAHSubmit(roomData)
+          case 'point':
+            return await CAHPoint(roomData)
         }
       }
     })

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Avatar, Button, Col, Popover, Row, Space, Tooltip } from 'antd'
+import { Avatar, Badge, Button, Col, message, Popover, Row, Space, Tooltip } from 'antd'
 import { useParams } from 'react-router-dom'
 
 import ChangeColorInput from '../../../shared/change-color-input'
@@ -9,12 +9,14 @@ import ReadyButton from '../../../shared/ready-button'
 import StartButton from '../../../shared/start-button'
 import { updateRoom } from '../../../ultilities/firebase'
 import { invertColor } from '../../../ultilities/invertColor'
+import { CAHReset } from '../ultilities/cards-against-humanity'
 
 import MyCards from './whiteCards'
 
 export default function CAHYou({ roomData, playerData }) {
-  const { name, color, id, master, phase, drawer, cards } = playerData
+  const { name, color, id, master, phase, cards, points } = playerData
   const roomPhase = roomData.phase
+  const { confirmWhite, round } = roomData
   const [userSetting, setUserSetting] = useState(false)
   const [drawed, setDrawed] = useState(false)
   const [confirm, setConfirm] = useState(false)
@@ -43,25 +45,51 @@ export default function CAHYou({ roomData, playerData }) {
     })
   }
 
+  const confirmChoseCard = async () => {
+    if (confirmWhite) {
+      return await updateRoom(roomData.id, { phase: 'point' })
+    } else {
+      message.error('You must choose a card!')
+    }
+  }
+
+  const nextRound = async () => {
+    return await CAHReset(roomData)
+  }
+
   const functions = () => {
     switch (roomPhase) {
       case 'waiting':
         switch (master) {
           case true:
-            return (
-              <>
-                <StartButton roomData={roomData} />
-                <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
-              </>
-            )
-
+            switch (round) {
+              case 0:
+                return (
+                  <>
+                    <StartButton roomData={roomData} />
+                    <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
+                  </>
+                )
+              default:
+                return (
+                  <Button
+                    size='large'
+                    shape='round'
+                    type='primary'
+                    onClick={() => {
+                      nextRound()
+                    }}
+                  >
+                    Next Round
+                  </Button>
+                )
+            }
           default:
             return <ReadyButton phase={phase} roomId={params.roomId} playerId={id} />
         }
-
       case 'playing':
         {
-          switch (drawer) {
+          switch (master) {
             case true:
               switch (drawed) {
                 case true:
@@ -115,7 +143,7 @@ export default function CAHYou({ roomData, playerData }) {
         }
         break
       case 'submit':
-        switch (drawer) {
+        switch (master) {
           case true:
             break
           default:
@@ -139,10 +167,17 @@ export default function CAHYou({ roomData, playerData }) {
         }
         break
       case 'choose':
-        switch (drawer) {
+        switch (master) {
           case true:
             return (
-              <Button size='large' shape='round' type='primary'>
+              <Button
+                size='large'
+                shape='round'
+                type='primary'
+                onClick={() => {
+                  confirmChoseCard()
+                }}
+              >
                 Confirm
               </Button>
             )
@@ -183,16 +218,22 @@ export default function CAHYou({ roomData, playerData }) {
               onOpenChange={handleOpenChange}
             >
               <Tooltip title='Click to edit name and color' placement='topRight'>
-                <Avatar
-                  size={64}
-                  style={{
-                    color: invertColor(color),
-                    backgroundColor: color,
-                    verticalAlign: 'middle',
-                  }}
+                <Badge
+                  count={points}
+                  color={invertColor(color, false)}
+                  style={{ color: invertColor(invertColor(color, false), true) }}
                 >
-                  {name[0]}
-                </Avatar>
+                  <Avatar
+                    size={64}
+                    style={{
+                      color: invertColor(color, true),
+                      backgroundColor: color,
+                      verticalAlign: 'middle',
+                    }}
+                  >
+                    {name[0]}
+                  </Avatar>
+                </Badge>
               </Tooltip>
             </Popover>
           </div>
