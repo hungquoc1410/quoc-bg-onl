@@ -10,12 +10,15 @@ import StartButton from '../../../shared/start-button'
 import { updateRoom } from '../../../ultilities/firebase'
 import { invertColor } from '../../../ultilities/invertColor'
 
+import MyCards from './whiteCards'
+
 export default function CAHYou({ roomData, playerData }) {
-  const { name, color, id, master, phase, drawer } = playerData
+  const { name, color, id, master, phase, drawer, cards } = playerData
   const roomPhase = roomData.phase
   const [userSetting, setUserSetting] = useState(false)
   const [drawed, setDrawed] = useState(false)
   const [confirm, setConfirm] = useState(false)
+  const [openCards, setOpenCards] = useState(false)
   const params = useParams()
 
   const handleOpenChange = (newOpen) => {
@@ -111,6 +114,25 @@ export default function CAHYou({ roomData, playerData }) {
           }
         }
         break
+      case 'submit':
+        switch (drawer) {
+          case true:
+            break
+          default:
+            return (
+              <Button
+                size='large'
+                shape='round'
+                type='primary'
+                onClick={() => {
+                  setOpenCards(true)
+                }}
+              >
+                My Cards
+              </Button>
+            )
+        }
+        break
       default:
         break
     }
@@ -163,6 +185,12 @@ export default function CAHYou({ roomData, playerData }) {
           </div>
         </Col>
       </Row>
+      <MyCards
+        open={openCards}
+        setOpen={setOpenCards}
+        black={roomData.currentBlack}
+        whites={cards}
+      />
     </>
   )
 }

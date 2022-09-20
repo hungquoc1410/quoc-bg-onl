@@ -5,8 +5,8 @@ import { Avatar } from 'antd'
 import { invertColor } from '../ultilities/invertColor'
 
 export default function PlayerAvatar({ name, color, ready, playing }) {
-  const readyColor = playing ? '' : ready ? 'rgb(74 222 128)' : 'red'
-  const outline = `4px solid ${readyColor}`
+  const readyColor = ready ? 'rgb(74 222 128)' : 'red'
+  const outline = playing ? null : `4px solid ${readyColor}`
 
   return (
     <Avatar
