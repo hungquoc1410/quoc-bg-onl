@@ -242,7 +242,9 @@ export default function CAHYou({ roomData, playerData }) {
         </Col>
         <Col span={18}>
           <div className='flex justify-center items-center w-full h-full'>
-            <Space>{functions()}</Space>
+            <Space wrap={true} className='flex justify-center items-center w-full h-full'>
+              {functions()}
+            </Space>
           </div>
         </Col>
       </Row>

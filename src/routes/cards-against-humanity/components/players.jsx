@@ -27,7 +27,7 @@ export default function CAHPlayers({ roomData }) {
   return (
     <>
       <Row gutter={[8, 0]} className='w-full'>
-        <Col span={6}>
+        <Col xs={24} lg={6}>
           <Divider style={{ margin: 0 }}>You</Divider>
           <Row className='w-full mt-4'>
             <Col span={24}>
@@ -35,7 +35,7 @@ export default function CAHPlayers({ roomData }) {
             </Col>
           </Row>
         </Col>
-        <Col span={18}>
+        <Col xs={24} lg={18}>
           <Divider style={{ margin: 0 }}>Others</Divider>
           <Row gutter={[0, 8]} className='flex justify-center w-full mt-4'>
             {others &&

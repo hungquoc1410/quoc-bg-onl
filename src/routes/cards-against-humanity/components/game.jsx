@@ -27,50 +27,31 @@ export default function CAHGame({ roomData }) {
   }, [roomData])
 
   return (
-    <Row className='w-full' justify='space-between'>
-      <Col span={5}>
-        <div className='w-full h-full flex justify-center items-center overflow-hidden aspect-[492/683]'>
-          {currentBlack && (
-            <img
-              className='max-w-none aspect-[492/683]'
-              style={{ width: '105%' }}
-              src={`/games/cards-against-humanity/black-cards/${currentBlack}`}
-            />
-          )}
-        </div>
-      </Col>
-      <Col span={18}>
-        <Row className='w-full' justify='space-between'>
-          {currentWhites &&
-            currentWhites.slice(0, 5).map((white) => {
-              return (
-                <Col
-                  key={white}
-                  span={4}
-                  className={`rounded-md ${white === confirmWhite ? ' ring-8 ring-sky-500' : ''}`}
-                  onClick={() => {
-                    chooseCard(white)
-                  }}
-                >
-                  <div className='w-full flex justify-center items-center overflow-hidden aspect-[492/683] rounded-md outline outline-2 outline-black'>
-                    <img
-                      className='max-w-none aspect-[492/683]'
-                      style={{ width: '105%' }}
-                      alt='white-card'
-                      src={`/games/cards-against-humanity/white-cards/${white}`}
-                    />
-                  </div>
-                </Col>
-              )
-            })}
+    <Row gutter={[0, 16]} className='w-full' justify='space-between'>
+      <Col xs={24} lg={5}>
+        <Row justify='center'>
+          <Col xs={12} lg={24}>
+            <div className='w-full h-full flex justify-center items-center overflow-hidden aspect-[492/683]'>
+              {currentBlack && (
+                <img
+                  className='max-w-none aspect-[492/683]'
+                  style={{ width: '105%' }}
+                  src={`/games/cards-against-humanity/black-cards/${currentBlack}`}
+                />
+              )}
+            </div>
+          </Col>
         </Row>
-        <Row className='w-full mt-8' justify='space-between'>
+      </Col>
+      <Col xs={24} lg={18}>
+        <Row className='w-full' justify='center'>
           {currentWhites &&
-            currentWhites.slice(5, 10).map((white) => {
+            currentWhites.map((white) => {
               return (
                 <Col
                   key={white}
-                  span={4}
+                  xs={8}
+                  lg={4}
                   className={`rounded-md ${white === confirmWhite ? ' ring-8 ring-sky-500' : ''}`}
                   onClick={() => {
                     chooseCard(white)
