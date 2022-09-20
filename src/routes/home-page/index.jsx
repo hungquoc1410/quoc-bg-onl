@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Card, Col, Divider, Input, Layout, message, Row, Typography } from 'antd'
+import { Button, Card, Col, Divider, Input, Layout, message, Row, Tooltip, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import { getRoomsData } from '../../ultilities/firebase'
@@ -97,19 +97,21 @@ export default function HomePageIndex() {
           {gameData.map((game) => {
             return (
               <Col key={game.title} xs={24} lg={4}>
-                <Card
-                  onClick={() => {
-                    createRoom(game.link)
-                  }}
-                  hoverable
-                  cover={
-                    <div className='aspect-square overflow-hidden'>
-                      <img alt={game.title} src={game.image} className='w-full' />
-                    </div>
-                  }
-                >
-                  <Meta title={game.title} description={game.description} />
-                </Card>
+                <Tooltip title='Click to create a room!'>
+                  <Card
+                    onClick={() => {
+                      createRoom(game.link)
+                    }}
+                    hoverable
+                    cover={
+                      <div className='aspect-square overflow-hidden'>
+                        <img alt={game.title} src={game.image} className='w-full' />
+                      </div>
+                    }
+                  >
+                    <Meta title={game.title} description={game.description} />
+                  </Card>
+                </Tooltip>
               </Col>
             )
           })}

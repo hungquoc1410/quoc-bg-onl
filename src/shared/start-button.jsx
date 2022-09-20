@@ -7,13 +7,13 @@ import { updateRoom } from '../ultilities/firebase'
 
 export default function StartButton({ roomData }) {
   const startGame = async () => {
-    if (roomData.numOfPlayers < roomData.minPlayer) {
-      return message.error('Need 4 players to start the game!')
-    }
+    // if (roomData.numOfPlayers < roomData.minPlayer) {
+    //   return message.error('Need 4 players to start the game!')
+    // }
     const playersData = createArrayFromObject(roomData.players)
     const allReady = !playersData.map((data) => data.phase === 'ready').includes(false)
     if (allReady) {
-      return updateRoom(roomData.id, { phase: 'playing' })
+      return updateRoom(roomData.id, { phase: 'playing', round: 1 })
     } else {
       const notReadyPlayers = playersData
         .filter((player) => player.phase === 'waiting')

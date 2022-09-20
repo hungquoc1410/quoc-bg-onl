@@ -7,6 +7,7 @@ import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
 import CAHGame from './components/game'
 import CAHPlayers from './components/players'
+import { CAHDraw, CAHPlaying } from './ultilities/cards-against-humanity'
 
 const { Header, Content } = Layout
 const { Title } = Typography
@@ -25,9 +26,10 @@ export default function CAHIndex() {
         checkRoom(roomData)
         switch (roomPhase) {
           case 'playing':
+            CAHPlaying(roomData)
             break
-
-          default:
+          case 'draw':
+            CAHDraw(roomData)
             break
         }
       }
@@ -53,12 +55,16 @@ export default function CAHIndex() {
               <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                 <Row className='w-full p-4'>
                   <Col span={24}>
-                    <CAHPlayers roomData={data} players={data.players} playing={data.phase != 'waiting'} />
+                    <CAHPlayers
+                      roomData={data}
+                      players={data.players}
+                      playing={data.phase != 'waiting'}
+                    />
                   </Col>
                 </Row>
               </Col>
               <Col xs={{ span: 24, order: 1 }} lg={{ span: 24, order: 2 }} className='p-4'>
-                <CAHGame players={data.players} round={data.round} />
+                <CAHGame roomData={data} players={data.players} round={data.round} />
               </Col>
             </Row>
           </Content>
