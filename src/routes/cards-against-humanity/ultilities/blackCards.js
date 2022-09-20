@@ -311,5 +311,4 @@ export const blackCardsData = [
   'black1_309.png',
   'black1_310.png',
   'black1_311.png',
-  'black1_312.png',
 ]
