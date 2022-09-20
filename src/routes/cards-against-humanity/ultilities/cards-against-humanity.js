@@ -55,12 +55,10 @@ export const CAHDraw = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
   const distributedWhites = playersData.map((player) => player.cards || []).flat()
   const remainingWhites = _.difference(whiteCards, distributedWhites)
-  // Check if all players draw
   const allDrawed = !playersData.map((player) => player.phase === 'drawed').includes(false)
   if (allDrawed) {
     return await updateRoom(id, { phase: 'submit', whiteCards: remainingWhites })
   }
-  // If not then distribute cards
   const notDrawPlayers = playersData.filter((player) => player.phase != 'drawed')
   notDrawPlayers.forEach(async (player) => {
     const playerCards = player.cards
@@ -78,4 +76,15 @@ export const CAHDraw = async (roomData) => {
     }
     return await updatePlayer(id, player.id, { cards: newCards, phase: 'drawed' })
   })
+}
+
+export const CAHSubmit = async (roomData) => {
+  const playersData = createArrayFromObject(roomData.players).filter(
+    (player) => player.drawer === false,
+  )
+  const allSubmitted = !playersData.map((player) => player.phase === 'submitted').includes(false)
+  if (allSubmitted) {
+    const currentWhites = playersData.map((player) => player.currentWhite)
+    return await updateRoom(roomData.id, { currentWhites, phase: 'choose' })
+  }
 }

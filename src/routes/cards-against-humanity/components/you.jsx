@@ -119,18 +119,36 @@ export default function CAHYou({ roomData, playerData }) {
           case true:
             break
           default:
+            switch (phase) {
+              case 'drawed':
+                return (
+                  <Button
+                    size='large'
+                    shape='round'
+                    type='primary'
+                    onClick={() => {
+                      setOpenCards(true)
+                    }}
+                  >
+                    My Cards
+                  </Button>
+                )
+              case 'submitted':
+                break
+            }
+        }
+        break
+      case 'choose':
+        switch (drawer) {
+          case true:
             return (
-              <Button
-                size='large'
-                shape='round'
-                type='primary'
-                onClick={() => {
-                  setOpenCards(true)
-                }}
-              >
-                My Cards
+              <Button size='large' shape='round' type='primary'>
+                Confirm
               </Button>
             )
+
+          default:
+            break
         }
         break
       default:
@@ -190,6 +208,8 @@ export default function CAHYou({ roomData, playerData }) {
         setOpen={setOpenCards}
         black={roomData.currentBlack}
         whites={cards}
+        roomId={roomData.id}
+        playerId={id}
       />
     </>
   )

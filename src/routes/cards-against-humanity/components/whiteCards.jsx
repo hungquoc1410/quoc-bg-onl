@@ -1,10 +1,25 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
-import { Col, Modal, Row } from 'antd'
+import React, { useState } from 'react'
+import { Col, message, Modal, Row } from 'antd'
+import _ from 'underscore'
 
-export default function MyCards({ open, setOpen, black, whites }) {
-  const handleOk = () => {
-    setOpen(false)
+import { updatePlayer } from '../../../ultilities/firebase'
+
+export default function MyCards({ open, setOpen, black, whites, roomId, playerId }) {
+  const [chose, setChose] = useState('')
+
+  const handleOk = async () => {
+    if (chose) {
+      const remainingCards = _.difference(whites, [chose])
+      await updatePlayer(roomId, playerId, {
+        currentWhite: chose,
+        cards: remainingCards,
+        phase: 'submitted',
+      })
+      return setOpen(false)
+    } else {
+      return message.error('You must choose a card!')
+    }
   }
 
   const handleCancel = () => {
@@ -18,7 +33,7 @@ export default function MyCards({ open, setOpen, black, whites }) {
       }}
       width={'80vw'}
       mask={false}
-      title={<div>Draggable Modal</div>}
+      title={<div>Choose Your Card!</div>}
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -41,8 +56,15 @@ export default function MyCards({ open, setOpen, black, whites }) {
             {whites &&
               whites.slice(0, 5).map((white) => {
                 return (
-                  <Col key={white} span={4}>
-                    <div className='w-full flex justify-center items-center overflow-hidden aspect-[492/683] outline outline-2 outline-black'>
+                  <Col
+                    key={white}
+                    span={4}
+                    className={`rounded-md ${white === chose ? ' ring-8 ring-sky-500' : ''}`}
+                    onClick={() => {
+                      setChose(white)
+                    }}
+                  >
+                    <div className='w-full flex justify-center items-center overflow-hidden aspect-[492/683] rounded-md outline outline-2 outline-black'>
                       <img
                         className='max-w-none aspect-[492/683]'
                         style={{ width: '105%' }}
@@ -58,8 +80,15 @@ export default function MyCards({ open, setOpen, black, whites }) {
             {whites &&
               whites.slice(5, 10).map((white) => {
                 return (
-                  <Col key={white} span={4}>
-                    <div className='w-full flex justify-center items-center overflow-hidden aspect-[492/683] outline outline-2 outline-black'>
+                  <Col
+                    key={white}
+                    span={4}
+                    className={`rounded-md ${white === chose ? ' ring-8 ring-sky-500' : ''}`}
+                    onClick={() => {
+                      setChose(white)
+                    }}
+                  >
+                    <div className='w-full flex justify-center items-center overflow-hidden aspect-[492/683] rounded-md outline outline-2 outline-black'>
                       <img
                         className='max-w-none aspect-[492/683]'
                         style={{ width: '105%' }}
