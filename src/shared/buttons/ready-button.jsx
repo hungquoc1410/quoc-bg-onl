@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button, Typography } from 'antd'
 
-import { updatePlayer } from '../ultilities/firebase'
+import { updatePlayer } from '../../ultilities/firebase'
 
 const { Text } = Typography
 

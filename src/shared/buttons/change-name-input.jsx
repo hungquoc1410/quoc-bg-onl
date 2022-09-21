@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Typography } from 'antd'
 
-import { updatePlayer } from '../ultilities/firebase'
+import { updatePlayer } from '../../ultilities/firebase'
 
 const { Paragraph } = Typography
 

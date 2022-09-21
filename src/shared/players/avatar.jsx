@@ -2,7 +2,7 @@
 import React from 'react'
 import { Avatar, Badge } from 'antd'
 
-import { invertColor } from '../ultilities/invertColor'
+import { invertColor } from '../../ultilities/invertColor'
 
 export default function PlayerAvatar({ name, color, points, ready, playing }) {
   const readyColor = ready ? 'rgb(74 222 128)' : 'red'

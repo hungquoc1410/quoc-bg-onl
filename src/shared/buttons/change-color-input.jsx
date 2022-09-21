@@ -2,8 +2,8 @@
 import React from 'react'
 import { Select } from 'antd'
 
-import { colorsData } from '../ultilities/colors'
-import { updatePlayer } from '../ultilities/firebase'
+import { colorsData } from '../../ultilities/colors'
+import { updatePlayer } from '../../ultilities/firebase'
 
 const { Option } = Select
 

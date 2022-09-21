@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Layout, Row, Space, Typography } from 'antd'
+import { Col, Layout, Row } from 'antd'
 import { onValue } from 'firebase/database'
 import { useParams } from 'react-router-dom'
 
+import RoomHeader from '../../shared/layouts/room-header'
+import Players from '../../shared/players/players'
 import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
 import CAHGame from './components/game'
-import CAHPlayers from './components/players'
 import { CAHDraw, CAHPlaying, CAHPoint, CAHSubmit } from './ultilities/cards-against-humanity'
 
-const { Header, Content } = Layout
-const { Title } = Typography
+const { Content } = Layout
 
 export default function CAHIndex() {
   const [data, setData] = useState()
@@ -42,22 +42,13 @@ export default function CAHIndex() {
     <>
       {data && (
         <Layout className='w-screen h-screen overflow-scroll'>
-          <Header>
-            <Space className='flex justify-center items-center w-full'>
-              <Title level={4} style={{ color: 'white', margin: 0, textAlign: 'center' }}>
-                Room ID:
-              </Title>
-              <Title level={4} style={{ color: 'white', margin: 0 }} copyable>
-                {params.roomId}
-              </Title>
-            </Space>
-          </Header>
+          <RoomHeader />
           <Content>
             <Row gutter={[0, 8]} className='w-full'>
               <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                 <Row className='w-full p-4'>
                   <Col span={24}>
-                    <CAHPlayers roomData={data} />
+                    <Players roomData={data} />
                   </Col>
                 </Row>
               </Col>

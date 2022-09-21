@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Avatar, Badge, Button, Col, message, Popover, Row, Space, Tooltip } from 'antd'
+import { Button, Col, message, Row, Space } from 'antd'
 import { useParams } from 'react-router-dom'
 
-import ChangeColorInput from '../../../shared/change-color-input'
-import ChangeNameInput from '../../../shared/change-name-input'
-import ReadyButton from '../../../shared/ready-button'
-import StartButton from '../../../shared/start-button'
+import ReadyButton from '../../../shared/buttons/ready-button'
+import StartButton from '../../../shared/buttons/start-button'
+import You from '../../../shared/players/you'
 import { updateRoom } from '../../../ultilities/firebase'
-import { invertColor } from '../../../ultilities/invertColor'
 import { CAHReset } from '../ultilities/cards-against-humanity'
 
 import MyCards from './whiteCards'
@@ -196,50 +194,14 @@ export default function CAHYou({ roomData, playerData }) {
   return (
     <>
       <Row>
-        <Col span={6}>
-          <div className='flex justify-center items-center w-full h-full cursor-pointer'>
-            <Popover
-              overlayStyle={{ width: '20vw' }}
-              placement='bottomRight'
-              content={
-                <div>
-                  <Row>
-                    <ChangeNameInput
-                      roomId={params.roomId}
-                      playerId={id}
-                      playerName={name}
-                    ></ChangeNameInput>
-                  </Row>
-                  <Row>
-                    <ChangeColorInput roomId={params.roomId} playerId={id} playerColor={color} />
-                  </Row>
-                </div>
-              }
-              trigger='click'
-              open={userSetting}
-              onOpenChange={handleOpenChange}
-            >
-              <Tooltip title='Click to edit name and color' placement='topRight'>
-                <Badge
-                  count={points}
-                  color={invertColor(color, false)}
-                  style={{ color: invertColor(invertColor(color, false), true) }}
-                >
-                  <Avatar
-                    size={64}
-                    style={{
-                      color: invertColor(color, true),
-                      backgroundColor: color,
-                      verticalAlign: 'middle',
-                    }}
-                  >
-                    {name[0]}
-                  </Avatar>
-                </Badge>
-              </Tooltip>
-            </Popover>
-          </div>
-        </Col>
+        <You
+          playerId={id}
+          name={name}
+          color={color}
+          points={points}
+          userSetting={userSetting}
+          handleOpenChange={handleOpenChange}
+        />
         <Col span={18}>
           <div className='flex justify-center items-center w-full h-full'>
             <Space wrap={true} className='flex justify-center items-center w-full h-full'>

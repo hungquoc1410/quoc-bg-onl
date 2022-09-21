@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 
-import PlayerAvatar from '../../../shared/avatar'
+import PlayerAvatar from '../../../shared/players/avatar'
 
 export default function BlankSlateOthers({ playerData, playing }) {
   const { name, phase, color, points } = playerData

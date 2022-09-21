@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Row } from 'antd'
 
-import { createArrayFromObject } from '../../../ultilities/createArrayFromObject'
-import { getInfo } from '../../../ultilities/info'
+import CAHYou from '../../routes/cards-against-humanity/components/you'
+import { createArrayFromObject } from '../../ultilities/createArrayFromObject'
+import { getInfo } from '../../ultilities/info'
 
-import CAHOthers from './others'
-import CAHYou from './you'
+import Others from './others'
 
-export default function CAHPlayers({ roomData }) {
+export default function Players({ roomData }) {
   const playing = roomData.phase != 'waiting'
+  const gameId = roomData.game
   const playersData = createArrayFromObject(roomData.players)
   const [you, setYou] = useState()
   const [others, setOthers] = useState()
@@ -24,13 +25,22 @@ export default function CAHPlayers({ roomData }) {
     setUp()
   }, [roomData])
 
+  const yourUI = () => {
+    switch (gameId) {
+      case 'cah':
+        return <CAHYou roomData={roomData} playerData={you} />
+      default:
+        break
+    }
+  }
+
   return (
     <>
       <Row gutter={[8, 0]} className='w-full'>
         <Col xs={24} lg={6}>
           <Divider style={{ margin: 0 }}>You</Divider>
           <Row className='w-full mt-4'>
-            <Col span={24}>{you && <CAHYou roomData={roomData} playerData={you} />}</Col>
+            <Col span={24}>{you && yourUI()}</Col>
           </Row>
         </Col>
         <Col xs={24} lg={18}>
@@ -41,7 +51,7 @@ export default function CAHPlayers({ roomData }) {
                 return (
                   <Col key={player.id} xs={4} lg={3}>
                     <div className='flex justify-center items-center w-full h-full'>
-                      <CAHOthers playerData={player} playing={playing} />
+                      <Others playerData={player} playing={playing} />
                     </div>
                   </Col>
                 )

@@ -2,8 +2,8 @@
 import React from 'react'
 import { Button, message } from 'antd'
 
-import { createArrayFromObject } from '../ultilities/createArrayFromObject'
-import { updateRoom } from '../ultilities/firebase'
+import { createArrayFromObject } from '../../ultilities/createArrayFromObject'
+import { updateRoom } from '../../ultilities/firebase'
 
 export default function StartButton({ roomData }) {
   const startGame = async () => {

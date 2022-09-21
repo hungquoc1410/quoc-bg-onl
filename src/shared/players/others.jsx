@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 
-import PlayerAvatar from '../../../shared/avatar'
+import PlayerAvatar from './avatar'
 
-export default function CAHOthers({ playerData, playing }) {
+export default function Others({ playerData, playing }) {
   const { name, phase, color, points } = playerData
 
   return (
