@@ -12,9 +12,9 @@ import BlankSlateWinner from './components/winner-data'
 import WordModal from './components/word-modal'
 import {
   BlankPlayerPoints,
-  BlankPlayerWaiting,
   BlankSlateAnswer,
   BlankSlatePlaying,
+  BlankSlateWin,
 } from './ultilities/blank-slate'
 
 const { Content } = Layout
@@ -22,7 +22,7 @@ const { Content } = Layout
 export default function BlankSlateIndex() {
   const [data, setData] = useState()
   const [wordModal, setWordModal] = useState(false)
-  const [gameEnd, setGameEnd] = useState(false)
+  const [maxPoint, setMaxPoint] = useState(null)
   const params = useParams()
   const roomRef = setRoomRef(params.roomId)
 
@@ -34,14 +34,6 @@ export default function BlankSlateIndex() {
         const roomPhase = roomData.phase
         checkRoom(roomData)
         switch (roomPhase) {
-          case 'waiting':
-            {
-              const result = await BlankPlayerWaiting(roomData)
-              if (result) {
-                setGameEnd(true)
-              }
-            }
-            break
           case 'playing':
             await BlankSlatePlaying(roomData)
             setWordModal(true)
@@ -51,6 +43,12 @@ export default function BlankSlateIndex() {
             break
           case 'points':
             BlankPlayerPoints(roomData)
+            break
+          case 'win':
+            {
+              const result = await BlankSlateWin(roomData)
+              setMaxPoint(result)
+            }
             break
         }
         return
@@ -74,7 +72,7 @@ export default function BlankSlateIndex() {
                   </Row>
                 </Col>
                 <Col xs={{ span: 24, order: 1 }} lg={{ span: 24, order: 2 }} className='p-4'>
-                  {gameEnd ? (
+                  {maxPoint ? (
                     <BlankSlateWinner roomData={data} />
                   ) : (
                     <BlankSlateGame players={data.players} round={data.round} />

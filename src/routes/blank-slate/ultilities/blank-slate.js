@@ -60,7 +60,7 @@ export const BlankPlayerPoints = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
   const allCounted = !playersData.map((player) => player.phase === 'ready').includes(false)
   if (allCounted) {
-    return await updateRoom(roomData.id, { phase: 'waiting' })
+    return await updateRoom(roomData.id, { phase: 'win' })
   }
   const allAnswers = playersData.map((player) => player.answer)
   const info = await getInfo()
@@ -79,22 +79,16 @@ export const BlankPlayerPoints = async (roomData) => {
   return await updatePlayer(roomData.id, playerId, { phase: 'ready', points: updatePoints })
 }
 
-export const BlankPlayerWaiting = async (roomData) => {
+export const BlankSlateWin = async (roomData) => {
   const playersData = createArrayFromObject(roomData.players)
-  const allNamePoints = playersData.map((player) => {
-    return { key: player.id, name: player.name, points: player.points }
-  })
   const allPoints = playersData.map((player) => player.points)
   const maxPoint = Math.max(...allPoints)
-  const winnerNames = playersData
-    .filter((player) => player.points === maxPoint)
-    .map((player) => player.name)
-  const result = { data: allNamePoints, name: winnerNames, gameId: 'blankslate' }
-  if (maxPoint >= 25) {
-    await BlankSlateReset(roomData)
-    return result
+  if (maxPoint < 25) {
+    await updateRoom(roomData.id, { phase: 'waiting' })
+    return null
+  } else {
+    return maxPoint
   }
-  return null
 }
 
 export const BlankSlateReset = async (roomData) => {

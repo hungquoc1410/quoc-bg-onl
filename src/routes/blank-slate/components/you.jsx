@@ -7,6 +7,7 @@ import ReadyButton from '../../../shared/buttons/ready-button'
 import StartButton from '../../../shared/buttons/start-button'
 import You from '../../../shared/players/you'
 import { updateRoom } from '../../../ultilities/firebase'
+import { BlankSlateReset } from '../ultilities/blank-slate'
 
 export default function BlankSlateYou({ roomData, playerData }) {
   const { name, id, color, points, master, phase } = playerData
@@ -22,6 +23,13 @@ export default function BlankSlateYou({ roomData, playerData }) {
   const nextRound = async () => {
     if (roomData.phase === 'waiting') {
       await updateRoom(params.roomId, { phase: 'playing' })
+    }
+    return
+  }
+
+  const newGame = async () => {
+    if (roomData.phase === 'win') {
+      await BlankSlateReset(roomData)
     }
     return
   }
@@ -60,6 +68,25 @@ export default function BlankSlateYou({ roomData, playerData }) {
               default:
                 break
             }
+        }
+        break
+      case 'win':
+        switch (master) {
+          case true:
+            return (
+              <Button
+                size='large'
+                shape='round'
+                type='primary'
+                onClick={() => {
+                  newGame()
+                }}
+              >
+                New Game
+              </Button>
+            )
+          default:
+            break
         }
     }
   }

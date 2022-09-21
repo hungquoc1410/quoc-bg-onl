@@ -50,7 +50,9 @@ export default function BlankSlateWinner({ roomData }) {
       <Divider />
       <Row className='w-full'>
         <Row className='w-full'>
-          <Result status='success' title={title} />
+          <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
+            <Result status='success' title={title} />
+          </Col>
         </Row>
         <Row className='w-full p-8'>
           <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
