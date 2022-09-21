@@ -49,7 +49,7 @@ export default function MyCards({ open, setOpen, black, whites, roomId, playerId
             gutter={[0, 16]}
           >
             {whites &&
-              _.shuffle(whites).map((white) => {
+              whites.map((white) => {
                 return (
                   <Col
                     key={white}
