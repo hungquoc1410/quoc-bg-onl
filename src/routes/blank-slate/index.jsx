@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Layout, Row } from 'antd'
 import { onValue } from 'firebase/database'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import RoomHeader from '../../shared/layouts/room-header'
+import Players from '../../shared/players/players'
 import { checkRoom, setRoomRef } from '../../ultilities/firebase'
 
 import BlankSlateGame from './components/game'
-import BlankSlatePlayers from './components/players'
+import BlankSlateWinner from './components/winner-data'
 import WordModal from './components/word-modal'
 import {
   BlankPlayerPoints,
@@ -21,8 +22,8 @@ const { Content } = Layout
 export default function BlankSlateIndex() {
   const [data, setData] = useState()
   const [wordModal, setWordModal] = useState(false)
+  const [gameEnd, setGameEnd] = useState(false)
   const params = useParams()
-  const navigate = useNavigate()
   const roomRef = setRoomRef(params.roomId)
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function BlankSlateIndex() {
             {
               const result = await BlankPlayerWaiting(roomData)
               if (result) {
-                navigate('/winner', { state: result })
+                setGameEnd(true)
               }
             }
             break
@@ -68,16 +69,16 @@ export default function BlankSlateIndex() {
                 <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
                   <Row className='w-full p-4'>
                     <Col span={24}>
-                      <BlankSlatePlayers
-                        roomData={data}
-                        players={data.players}
-                        playing={data.phase != 'waiting'}
-                      />
+                      <Players roomData={data} />
                     </Col>
                   </Row>
                 </Col>
                 <Col xs={{ span: 24, order: 1 }} lg={{ span: 24, order: 2 }} className='p-4'>
-                  <BlankSlateGame players={data.players} round={data.round} />
+                  {gameEnd ? (
+                    <BlankSlateWinner roomData={data} />
+                  ) : (
+                    <BlankSlateGame players={data.players} round={data.round} />
+                  )}
                 </Col>
               </Row>
             </Content>

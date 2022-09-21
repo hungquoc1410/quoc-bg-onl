@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Row } from 'antd'
 
+import BlankSlateYou from '../../routes/blank-slate/components/you'
 import CAHYou from '../../routes/cards-against-humanity/components/you'
 import { createArrayFromObject } from '../../ultilities/createArrayFromObject'
 import { getInfo } from '../../ultilities/info'
@@ -29,8 +30,8 @@ export default function Players({ roomData }) {
     switch (gameId) {
       case 'cah':
         return <CAHYou roomData={roomData} playerData={you} />
-      default:
-        break
+      case 'blankslate':
+        return <BlankSlateYou roomData={roomData} playerData={you} />
     }
   }
 
