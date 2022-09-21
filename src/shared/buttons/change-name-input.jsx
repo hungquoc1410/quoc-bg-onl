@@ -1,28 +1,28 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
-import { Typography } from 'antd'
+import { Input } from 'antd'
 
 import { updatePlayer } from '../../ultilities/firebase'
+import { setInfo } from '../../ultilities/info'
 
-const { Paragraph } = Typography
-
-export default function ChangeNameInput({ roomId, playerId, playerName }) {
+export default function ChangeNameInput({ roomId, playerId, playerName, homepage }) {
   const [name, setName] = useState(playerName)
-  const changeName = async (string) => {
-    await updatePlayer(roomId, playerId, { name: string })
-    return setName(string)
+  const changeName = async (e) => {
+    const newName = e.target.value
+    await setInfo({ playerName: newName })
+    if (!homepage) {
+      await updatePlayer(roomId, playerId, { name: newName })
+    }
+    return setName(newName)
   }
 
   return (
-    <Paragraph
+    <Input
       style={{ width: '100%' }}
-      editable={{
-        onChange: changeName,
-        maxLength: 20,
-        triggerType: ['text', 'icon'],
-      }}
-    >
-      {name}
-    </Paragraph>
+      onChange={changeName}
+      defaultValue={name}
+      value={name}
+      placeholder='Your Name'
+    />
   )
 }

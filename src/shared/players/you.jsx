@@ -18,15 +18,21 @@ export default function You({ playerId, name, color, points, userSetting, handle
           placement='bottomRight'
           content={
             <div>
-              <Row>
-                <ChangeNameInput
-                  roomId={params.roomId}
-                  playerId={playerId}
-                  playerName={name}
-                ></ChangeNameInput>
-              </Row>
-              <Row>
-                <ChangeColorInput roomId={params.roomId} playerId={playerId} playerColor={color} />
+              <Row className='w-full' justify='space-evenly' gutter={[0, 8]}>
+                <Col span={24}>
+                  <ChangeNameInput
+                    roomId={params.roomId}
+                    playerId={playerId}
+                    playerName={name}
+                  ></ChangeNameInput>
+                </Col>
+                <Col span={24}>
+                  <ChangeColorInput
+                    roomId={params.roomId}
+                    playerId={playerId}
+                    playerColor={color}
+                  />
+                </Col>
               </Row>
             </div>
           }
@@ -48,7 +54,7 @@ export default function You({ playerId, name, color, points, userSetting, handle
                   verticalAlign: 'middle',
                 }}
               >
-                {name[0]}
+                {name}
               </Avatar>
             </Badge>
           </Tooltip>

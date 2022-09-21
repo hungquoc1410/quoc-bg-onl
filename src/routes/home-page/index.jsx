@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Card, Col, Divider, Input, Layout, message, Row, Tooltip, Typography } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
+import ChangeColorInput from '../../shared/buttons/change-color-input'
+import ChangeNameInput from '../../shared/buttons/change-name-input'
 import { getRoomsData } from '../../ultilities/firebase'
 import { gameData } from '../../ultilities/games'
 import { getInfo, setInfo } from '../../ultilities/info'
@@ -14,20 +16,35 @@ const { Title } = Typography
 
 export default function HomePageIndex() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [inputRoomId, setInputRoomId] = useState('')
+  const [name, setName] = useState()
+  const [color, setColor] = useState()
+
+  const setUp = async () => {
+    const info = await getInfo()
+    const { playerName, playerColor } = info
+    setName(playerName || 'Your Name')
+    setColor(playerColor || 'Your Color')
+  }
+
+  if (location.pathname === '/') {
+    setUp()
+  }
 
   async function createRoom(game) {
     const id = Math.random().toString(36).substring(2, 9)
     const info = await getInfo()
+    const { playerId, playerName, playerColor } = info
     await setInfo({ roomId: id, gameId: game })
     switch (game) {
       case 'blankslate':
         await BlankSlateRoom(id, game)
-        await BlankSlatePlayer(id, info.playerId, true)
+        await BlankSlatePlayer(id, playerId, playerName, playerColor, true)
         break
       case 'cah':
         await CAHRoom(id, game)
-        await CAHPlayer(id, info.playerId, true, true)
+        await CAHPlayer(id, playerId, playerName, playerColor, true)
         break
     }
     return navigate(`${id}/${game}`)
@@ -69,7 +86,19 @@ export default function HomePageIndex() {
         </Title>
       </Header>
       <Content className='p-8'>
-        <Row>
+        <Row
+          className='w-full lg:!justify-center lg:!gap-4'
+          justify='space-evenly'
+          gutter={[0, 32]}
+        >
+          <Col xs={24} lg={4}>
+            <Row className='w-full' justify='space-evenly' gutter={[0, 8]}>
+              <Col span={24}>{name && <ChangeNameInput playerName={name} homepage={true} />}</Col>
+              <Col span={24}>
+                {color && <ChangeColorInput playerColor={color} homepage={true} />}
+              </Col>
+            </Row>
+          </Col>
           <Col xs={24} lg={4}>
             <Input.Group compact>
               <Input
@@ -93,7 +122,11 @@ export default function HomePageIndex() {
           </Col>
         </Row>
         <Divider />
-        <Row gutter={{ xs: [0, 8], lg: 16 }}>
+        <Row
+          className='w-full lg:!justify-center lg:!gap-4'
+          justify='space-evenly'
+          gutter={[0, 32]}
+        >
           {gameData.map((game) => {
             return (
               <Col key={game.title} xs={24} lg={4}>

@@ -28,13 +28,13 @@ export const CAHRoom = async (roomId, gameId) => {
   return await createRoom(roomId, roomData)
 }
 
-export const CAHPlayer = async (roomId, playerId, master = false) => {
+export const CAHPlayer = async (roomId, playerId, name, color, master = false) => {
   const playerData = {
     id: playerId,
     points: 0,
     currentWhite: '',
-    name: generateName(),
-    color: generateColor(),
+    name: name || generateName(),
+    color: color || generateColor(),
     master,
     cards: [],
     phase: 'waiting',

@@ -23,7 +23,7 @@ export default function PlayerAvatar({ name, color, points, ready, playing }) {
           verticalAlign: 'middle',
         }}
       >
-        {name[0]}
+        {name}
       </Avatar>
     </Badge>
   )
