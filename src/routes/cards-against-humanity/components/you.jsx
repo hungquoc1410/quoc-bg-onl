@@ -9,7 +9,7 @@ import You from '../../../shared/players/you'
 import { updateRoom } from '../../../ultilities/firebase'
 import { CAHReset } from '../ultilities/cards-against-humanity'
 
-import MyCards from './whiteCards'
+import MyCards from './my-cards'
 
 export default function CAHYou({ roomData, playerData }) {
   const { name, color, id, master, phase, cards, points } = playerData

@@ -5,6 +5,8 @@ import _ from 'underscore'
 
 import { updatePlayer } from '../../../ultilities/firebase'
 
+import BlackCard from './black-card'
+
 export default function MyCards({ open, setOpen, black, whites, roomId, playerId }) {
   const [chose, setChose] = useState('')
 
@@ -39,22 +41,7 @@ export default function MyCards({ open, setOpen, black, whites, roomId, playerId
       onCancel={handleCancel}
     >
       <Row gutter={[0, 16]} className='w-full' justify='space-between'>
-        <Col xs={24} lg={5}>
-          <Row justify='center'>
-            <Col xs={16} lg={24}>
-              <div className='w-full h-full flex justify-center items-center overflow-hidden aspect-[492/683]'>
-                {black && (
-                  <img
-                    className='max-w-none aspect-[492/683]'
-                    style={{ width: '105%' }}
-                    src={`/games/cards-against-humanity/black-cards/${black}`}
-                    alt='black-card'
-                  />
-                )}
-              </div>
-            </Col>
-          </Row>
-        </Col>
+        <BlackCard black={black} />
         <Col xs={24} lg={18}>
           <Row
             className='w-full lg:!justify-center lg:!gap-4'
@@ -62,7 +49,7 @@ export default function MyCards({ open, setOpen, black, whites, roomId, playerId
             gutter={[0, 16]}
           >
             {whites &&
-              whites.map((white) => {
+              _.shuffle(whites).map((white) => {
                 return (
                   <Col
                     key={white}
