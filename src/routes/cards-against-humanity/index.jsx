@@ -46,7 +46,7 @@ export default function CAHIndex() {
           <Content>
             <Row gutter={[0, 8]} className='w-full'>
               <Col xs={{ span: 24, order: 2 }} lg={{ span: 24, order: 1 }}>
-                <Row className='w-full p-4'>
+                <Row className='w-full p-0 lg:p-4'>
                   <Col span={24}>
                     <Players roomData={data} />
                   </Col>

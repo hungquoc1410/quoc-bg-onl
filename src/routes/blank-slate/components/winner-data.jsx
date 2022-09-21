@@ -54,7 +54,7 @@ export default function BlankSlateWinner({ roomData }) {
             <Result status='success' title={title} />
           </Col>
         </Row>
-        <Row className='w-full p-8'>
+        <Row className='w-full p-0 lg:p-8'>
           <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
             <Table columns={columns} dataSource={data} pagination={false} />;
           </Col>

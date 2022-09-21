@@ -85,7 +85,7 @@ export default function HomePageIndex() {
           Nathan Board Game Online
         </Title>
       </Header>
-      <Content className='p-8'>
+      <Content className='p-0 lg:p-8'>
         <Row
           className='w-full lg:!justify-center lg:!gap-4'
           justify='space-evenly'

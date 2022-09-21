@@ -10,7 +10,6 @@ import HomePageIndex from './routes/home-page'
 import HomePage from './routes/home-page/home-page'
 import ErrorPage from './shared/error-page'
 import RoomPage from './shared/room-page'
-import Winner from './shared/winner'
 import { Database } from './ultilities/firebase'
 
 import './index.css'
@@ -23,11 +22,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePageIndex /> },
-      {
-        path: 'winner',
-        element: <Winner />,
-        errorElement: <ErrorPage />,
-      },
       {
         path: ':roomId',
         element: <RoomPage />,

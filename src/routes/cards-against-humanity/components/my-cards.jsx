@@ -55,7 +55,7 @@ export default function MyCards({ open, setOpen, black, whites, roomId, playerId
                     key={white}
                     xs={10}
                     lg={4}
-                    className={`rounded-md ${white === chose ? 'ring-8 ring-sky-500' : ''}`}
+                    className={`rounded-md ${white === chose ? 'lg:ring-8 ring-4 ring-sky-500' : ''}`}
                     onClick={() => {
                       setChose(white)
                     }}

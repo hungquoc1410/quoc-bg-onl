@@ -54,9 +54,9 @@ export default function BlankSlateGame({ players, round }) {
       </Row>
       <Divider />
       <Row className='w-full'>
-        <Row className='w-full p-8'>
+        <Row className='w-full p-0 lg:p-8'>
           <Col xs={{ span: 24 }} lg={{ span: 8, offset: 8 }}>
-            <Table columns={columns} dataSource={data} pagination={false} />;
+            <Table columns={columns} dataSource={data} pagination={false} />
           </Col>
         </Row>
       </Row>

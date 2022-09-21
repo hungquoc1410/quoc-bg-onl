@@ -44,7 +44,7 @@ export default function CAHGame({ roomData }) {
                   key={white}
                   xs={8}
                   lg={4}
-                  className={`rounded-md ${white === confirmWhite ? ' ring-8 ring-sky-500' : ''}`}
+                  className={`rounded-md ${white === confirmWhite ? 'lg:ring-8 ring-4 ring-sky-500' : ''}`}
                   onClick={() => {
                     chooseCard(white)
                   }}
